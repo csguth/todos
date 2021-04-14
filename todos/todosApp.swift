@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct todosApp: App {
+    
+    @Environment(\.scenePhase) var scenePhase
+    
     var body: some Scene {
+        let persistenceController = PersistenceController.shared
         WindowGroup {
-            ContentView()
+            NavigationView {
+                FosterHomesView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            }
+        }
+        .onChange(of: scenePhase) { _ in
+            persistenceController.save()
         }
     }
 }

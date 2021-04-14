@@ -8,11 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		6D166B0E2622E23F00B1DF67 /* todosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B0D2622E23F00B1DF67 /* todosApp.swift */; };
-		6D166B102622E23F00B1DF67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B0F2622E23F00B1DF67 /* ContentView.swift */; };
+		6D166B102622E23F00B1DF67 /* FosterHomeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B0F2622E23F00B1DF67 /* FosterHomeDetailsView.swift */; };
 		6D166B122622E24000B1DF67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D166B112622E24000B1DF67 /* Assets.xcassets */; };
 		6D166B152622E24000B1DF67 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D166B142622E24000B1DF67 /* Preview Assets.xcassets */; };
 		6D166B202622E24000B1DF67 /* todosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B1F2622E24000B1DF67 /* todosTests.swift */; };
 		6D166B2B2622E24000B1DF67 /* todosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B2A2622E24000B1DF67 /* todosUITests.swift */; };
+		6D60EB1F262309CF007726B7 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB1E262309CF007726B7 /* Note.swift */; };
+		6D60EB2726232C1E007726B7 /* NoteSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2626232C1E007726B7 /* NoteSheetView.swift */; };
+		6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2B26232D00007726B7 /* NoteView.swift */; };
+		6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB3026233164007726B7 /* FosterHomesView.swift */; };
+		6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB38262331DA007726B7 /* FosterHome.swift */; };
+		6DA0CD0E2623741700448FE7 /* AddFosterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA0CD0D2623741700448FE7 /* AddFosterHomeView.swift */; };
+		6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD23492623001F0070312E /* PersistanceController.swift */; };
+		6DDD2354262304060070312E /* FosterTheKitten.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B532622EEC700B1DF67 /* FosterTheKitten.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +43,7 @@
 /* Begin PBXFileReference section */
 		6D166B0A2622E23F00B1DF67 /* todos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D166B0D2622E23F00B1DF67 /* todosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todosApp.swift; sourceTree = "<group>"; };
-		6D166B0F2622E23F00B1DF67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6D166B0F2622E23F00B1DF67 /* FosterHomeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeDetailsView.swift; sourceTree = "<group>"; };
 		6D166B112622E24000B1DF67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D166B142622E24000B1DF67 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6D166B162622E24000B1DF67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +53,14 @@
 		6D166B262622E24000B1DF67 /* todosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = todosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D166B2A2622E24000B1DF67 /* todosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todosUITests.swift; sourceTree = "<group>"; };
 		6D166B2C2622E24000B1DF67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D166B542622EEC700B1DF67 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		6D60EB1E262309CF007726B7 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		6D60EB2626232C1E007726B7 /* NoteSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSheetView.swift; sourceTree = "<group>"; };
+		6D60EB2B26232D00007726B7 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
+		6D60EB3026233164007726B7 /* FosterHomesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesView.swift; sourceTree = "<group>"; };
+		6D60EB38262331DA007726B7 /* FosterHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHome.swift; sourceTree = "<group>"; };
+		6DA0CD0D2623741700448FE7 /* AddFosterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFosterHomeView.swift; sourceTree = "<group>"; };
+		6DDD23492623001F0070312E /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +91,7 @@
 		6D166B012622E23F00B1DF67 = {
 			isa = PBXGroup;
 			children = (
+				6D166B532622EEC700B1DF67 /* FosterTheKitten.xcdatamodeld */,
 				6D166B0C2622E23F00B1DF67 /* todos */,
 				6D166B1E2622E24000B1DF67 /* todosTests */,
 				6D166B292622E24000B1DF67 /* todosUITests */,
@@ -95,8 +112,15 @@
 		6D166B0C2622E23F00B1DF67 /* todos */ = {
 			isa = PBXGroup;
 			children = (
+				6D60EB3026233164007726B7 /* FosterHomesView.swift */,
+				6DA0CD0D2623741700448FE7 /* AddFosterHomeView.swift */,
 				6D166B0D2622E23F00B1DF67 /* todosApp.swift */,
-				6D166B0F2622E23F00B1DF67 /* ContentView.swift */,
+				6DDD23492623001F0070312E /* PersistanceController.swift */,
+				6D166B0F2622E23F00B1DF67 /* FosterHomeDetailsView.swift */,
+				6D60EB2B26232D00007726B7 /* NoteView.swift */,
+				6D60EB2626232C1E007726B7 /* NoteSheetView.swift */,
+				6D60EB1E262309CF007726B7 /* Note.swift */,
+				6D60EB38262331DA007726B7 /* FosterHome.swift */,
 				6D166B112622E24000B1DF67 /* Assets.xcassets */,
 				6D166B162622E24000B1DF67 /* Info.plist */,
 				6D166B132622E24000B1DF67 /* Preview Content */,
@@ -259,8 +283,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D166B102622E23F00B1DF67 /* ContentView.swift in Sources */,
+				6DA0CD0E2623741700448FE7 /* AddFosterHomeView.swift in Sources */,
+				6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */,
+				6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */,
+				6D166B102622E23F00B1DF67 /* FosterHomeDetailsView.swift in Sources */,
+				6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */,
+				6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */,
 				6D166B0E2622E23F00B1DF67 /* todosApp.swift in Sources */,
+				6D60EB1F262309CF007726B7 /* Note.swift in Sources */,
+				6D60EB2726232C1E007726B7 /* NoteSheetView.swift in Sources */,
+				6DDD2354262304060070312E /* FosterTheKitten.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,6 +612,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6D166B532622EEC700B1DF67 /* FosterTheKitten.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6D166B542622EEC700B1DF67 /* Model.xcdatamodel */,
+			);
+			currentVersion = 6D166B542622EEC700B1DF67 /* Model.xcdatamodel */;
+			path = FosterTheKitten.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6D166B022622E23F00B1DF67 /* Project object */;
 }

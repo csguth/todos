@@ -7,64 +7,94 @@
 
 import SwiftUI
 
-struct FosterHomesView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-
-    @FetchRequest(
-        entity: FosterHome.entity(),
-        sortDescriptors: []
-    ) var fosterHomes: FetchedResults<FosterHome>
+extension FosterHomesView {
     
-    @State var isSheetVisible = false
+    class ViewModel: ObservableObject {
+    
+        @Environment(\.managedObjectContext) var managedObjectContext
+
+        @FetchRequest (
+            entity: FosterHome.entity(),
+            sortDescriptors: []
+        ) var fosterHomes: FetchedResults<FosterHome>
+        
+        private var selectedOne: FosterHome?
+        let defaultFosterHome = FosterHome()
+        
+        @Published var isAdding = false
+        
+        var homes: [FosterHomeDetailsView.ViewModel] {
+            fosterHomes.map {
+                FosterHomeDetailsView.ViewModel(for: $0)
+            }
+        }
+        
+        func create() -> AddFosterHomeView.ViewModel {
+            let newFosterHome = FosterHome(context: managedObjectContext)
+            return AddFosterHomeView.ViewModel(for: newFosterHome)
+        }
+        
+        var selected: FosterHome {
+            selectedOne ?? FosterHome()
+        }
+    
+        
+        func add() {
+            if isAdding {
+                return
+            }
+            isAdding = true
+        }
+        
+        func delete(indexSet: IndexSet) {
+            indexSet.map {
+                fosterHomes[$0]
+            }
+            .forEach(managedObjectContext.delete)
+        }
+        
+        var isEmpty: Bool {
+            fosterHomes.isEmpty
+        }
+        
+    }
+    
+}
+
+struct FosterHomesView: View {
+    
+    @ObservedObject var fosterHomes: ViewModel
     
     var body: some View {
         ZStack {
             if fosterHomes.isEmpty {
                 VStack {
                     Text("Sem LTs")
-                    Button(action: {
-                        isSheetVisible.toggle()
-                    }, label: {
+                    Button(action: fosterHomes.add, label: {
                         Text("Adicionar um!")
                     })
                 }
             }
             else {
                 List {
-                    ForEach(fosterHomes) { home in
+                    ForEach(fosterHomes.homes) { home in
                         NavigationLink(
-                            destination: FosterHomeDetailsView(for: home)
-                                .environment(\.managedObjectContext, managedObjectContext),
+                            destination: FosterHomeDetailsView(fosterHome: home),
                             label: {
-                                Text(home.wrappedName)
+                                Text("")
                             })
-                        
                     }
-                    .onDelete(perform: { indexSet in
-                        indexSet.map{fosterHomes[$0]}.forEach{
-                            managedObjectContext.delete($0)
-                        }
-                    })
+                    .onDelete(perform: fosterHomes.delete)
                 }
                 .toolbar {
-                    Button(action: {
-                        isSheetVisible.toggle()
-                    }, label: {
+                    Button(action: fosterHomes.add, label: {
                         Image(systemName: "note.text.badge.plus")
                     })
                 }
             }
         }
-        .sheet(isPresented: $isSheetVisible) {
-            AddFosterHomeView() { data in
-                let newFosterHome = FosterHome(context: managedObjectContext)
-                newFosterHome.id = UUID()
-                newFosterHome.name = data.name
-                newFosterHome.malesCount = data.maleCount
-                newFosterHome.femalesCount = data.femaleCount
-                newFosterHome.phone = data.phone
-                newFosterHome.age = data.age
-            }
+        .sheet(isPresented: $fosterHomes.isAdding) {
+            AddFosterHomeView(fosterHome: fosterHomes.create())
         }
         .navigationBarTitle("Lares Temporários")
     }
@@ -73,7 +103,7 @@ struct FosterHomesView: View {
 struct FosterHomesView_Previews: PreviewProvider {
     static var previews: some View {
         let persistenceController = PersistenceController.preview
-        FosterHomesView()
+        FosterHomesView(fosterHomes: FosterHomesView.ViewModel())
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }

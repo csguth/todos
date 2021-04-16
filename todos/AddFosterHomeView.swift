@@ -7,34 +7,55 @@
 
 import SwiftUI
 
-struct AddedFosterHome {
-    var name: String = ""
-    var phone: String = ""
-    var maleCount: Int32 = 0
-    var femaleCount: Int32 = 0
-    var ageString: String = ""
-    var age: Int32 {
-        Int32(ageString) ?? 0
+extension AddFosterHomeView {
+    
+    class ViewModel: ObservableObject, Identifiable {
+                
+        @Published  var home: FosterHome?
+        var name: String
+        var phone: String
+        var maleCount: Int
+        var femaleCount: Int
+        var age: String
+        
+        init (for fosterHome: FosterHome?) {
+            home = fosterHome
+            name = fosterHome?.name ?? ""
+            phone = fosterHome?.phone ?? ""
+            maleCount = Int(fosterHome?.malesCount ?? 0)
+            femaleCount = Int(fosterHome?.femalesCount ?? 0)
+            age = "\(fosterHome?.age ?? 0)"
+        }
+        
+        var id: UUID {
+            home?.id ?? UUID()
+        }
+        
+        func save() {
+            guard let age = Int32(self.age) else {
+                return
+            }
+            home?.name = name
+            home?.phone = phone
+            home?.malesCount = Int32(maleCount)
+            home?.femalesCount = Int32(maleCount)
+            home?.age = age
+            try? home?.managedObjectContext?.save()
+        }
+        
+        
     }
+    
+}
+
+struct ViewModel {
+    
 }
 
 struct AddFosterHomeView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State var fosterHome = AddedFosterHome()
-    
-    let onSaved: (AddedFosterHome) -> Void
-
-    init(onSaved: @escaping (AddedFosterHome) -> Void)
-    {
-        self.onSaved = onSaved
-    }
-    
-    func save() {
-        onSaved(fosterHome)
-        presentationMode.wrappedValue.dismiss()
-
-    }
+    @StateObject var fosterHome: ViewModel
     
     var body: some View {
         Form {
@@ -50,12 +71,12 @@ struct AddFosterHomeView: View {
                 Stepper(value: $fosterHome.femaleCount, in: 0...10) {
                     Text("\(fosterHome.femaleCount) fêmeas")
                 }
-                TextField("Idade em dias", text: $fosterHome.ageString)
+                TextField("Idade em dias", text: $fosterHome.age)
                     .keyboardType(.numberPad)
             }
             Section {
-                Button("Salvar", action: save)
-                    .disabled(fosterHome.ageString.isEmpty || fosterHome.name.isEmpty)
+                Button("Salvar", action: fosterHome.save)
+                    .disabled(fosterHome.age.isEmpty || fosterHome.name.isEmpty)
             }
             
         }
@@ -65,8 +86,6 @@ struct AddFosterHomeView: View {
 
 struct AddFosterHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFosterHomeView() { _ in
-            
-        }
+        AddFosterHomeView(fosterHome: AddFosterHomeView.ViewModel(for: nil))
     }
 }

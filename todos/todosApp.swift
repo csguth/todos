@@ -16,7 +16,7 @@ struct todosApp: App {
         let persistenceController = PersistenceController.shared
         WindowGroup {
             NavigationView {
-                FosterHomesView()
+                FosterHomesView(fosterHomes: FosterHomesView.ViewModel())
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }

@@ -29,6 +29,7 @@ struct NoteView: View {
     }
 }
 
+
 struct TodoView_Previews: PreviewProvider {
     static var previews: some View {
         let persistenceController = PersistenceController.preview

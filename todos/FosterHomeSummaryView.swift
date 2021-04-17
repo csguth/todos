@@ -24,20 +24,16 @@ extension FosterHomeSummaryView {
             _fosterHome = Published(wrappedValue: fosterHome)
         }
         
+        private func makeText(count: Int, letter: Character) -> String {
+            count > 0 ? "\(count)\(letter)": ""
+        }
+        
+        private var plus: String {
+            fosterHome.malesCount > 0 && fosterHome.femalesCount > 0 ? "+ " : ""
+        }
+        
         var text: String {
-            var males = ""
-            if fosterHome.malesCount > 0 {
-                males = "\(fosterHome.malesCount)M "
-            }
-            var plus = ""
-            if fosterHome.malesCount > 0 && fosterHome.femalesCount > 0 {
-                plus = "+ "
-            }
-            var females = ""
-            if fosterHome.femalesCount > 0 {
-                females = "\(fosterHome.femalesCount)F"
-            }
-            return males + plus + females
+            return makeText(count: Int(fosterHome.malesCount), letter: "M") + plus + makeText(count: Int(fosterHome.femalesCount), letter: "F")
         }
         
     }

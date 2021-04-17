@@ -17,26 +17,26 @@ struct PersistenceController {
     // A test configuration for SwiftUI previews
     static var preview: PersistenceController = {
         let controller = PersistenceController(inMemory: true)
-//
-//        let todo1 = Todo(context: controller.container.viewContext)
-//        todo1.id = UUID()
-//        todo1.content = "some content"
-//        todo1.date = Date()
-//        
-//        let todo2 = Todo(context: controller.container.viewContext)
-//        todo2.id = UUID()
-//        todo2.content = "asdasd"
-//        todo1.date = Date()
-//        
-//        let todo3 = Todo(context: controller.container.viewContext)
-//        todo3.id = UUID()
-//        todo3.content = "another note"
-//        todo1.date = Date()
-//        
-//        let fosterHome = FosterHome(context: controller.container.viewContext)
-//        fosterHome.id = UUID()
-//        fosterHome.name = "Lt da Leona"
-//        fosterHome.todos = [todo1, todo2, todo3]
+
+        let todo1 = Note(context: controller.container.viewContext)
+        todo1.id = UUID()
+        todo1.content = "some content"
+        todo1.date = Date()
+        
+        let todo2 = Note(context: controller.container.viewContext)
+        todo2.id = UUID()
+        todo2.content = "asdasd"
+        todo1.date = Date()
+        
+        let todo3 = Note(context: controller.container.viewContext)
+        todo3.id = UUID()
+        todo3.content = "another note"
+        todo1.date = Date()
+        
+        let fosterHome = FosterHome(context: controller.container.viewContext)
+        fosterHome.id = UUID()
+        fosterHome.name = "Lt da Leona"
+        fosterHome.notes = [todo1, todo2, todo3]
 
         return controller
     }()

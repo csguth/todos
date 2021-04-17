@@ -18,4 +18,5 @@ extension Note {
         get{content ?? ""}
         set{content = newValue}
     }
+    
 }

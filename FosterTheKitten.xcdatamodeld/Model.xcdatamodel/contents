@@ -17,6 +17,6 @@
     </entity>
     <elements>
         <element name="FosterHome" positionX="-63" positionY="9" width="128" height="148"/>
-        <element name="Note" positionX="143.98046875" positionY="84.4296875" width="128" height="103"/>
+        <element name="Note" positionX="143.98046875" positionY="84.4296875" width="128" height="89"/>
     </elements>
 </model>

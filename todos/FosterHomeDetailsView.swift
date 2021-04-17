@@ -9,43 +9,76 @@ import SwiftUI
 
 struct FosterHomeDetailsView: View {
 
+    @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var fosterHome: ViewModel
-    
+    @State var removed = Set<Note>()
+
     var body: some View {
         VStack {
-//            FosterHomeSummaryView(
-//            )
+            FosterHomeSummaryView(fosterHome: FosterHomeSummaryView.ViewModel(for: fosterHome.fosterHome ))
             Spacer()
             if fosterHome.notes.isEmpty {
                 VStack {
                     Text("Sem notas")
-                    Button("Criar uma!") {
-                        fosterHome.add()
-                    }
+                    Button("Criar uma!", action: {
+                        fosterHome.edit(note: nil)
+                    })
                 }
             }
             else
             {
                 List {
                     ForEach(fosterHome.notes) { note in
-                        Button(action: {
-                           
-                        }, label: {
-                            NoteView(note: note)
-                        })
+                        if !removed.contains(note) {
+                            Button(action: {
+                                fosterHome.edit(note: note)
+                            }, label: {
+                                NoteView(note: note)
+                            })
+                            
+                        }
                     }
-                    .onDelete(perform: fosterHome.onDelete)
+                    .onDelete(perform: { indexSet in
+                        indexSet.map{
+                            fosterHome.notes[$0]
+                        }
+                        .forEach {
+                            print("delete \($0)")
+                            removed.insert($0)
+                            try! managedObjectContext.save()
+                            managedObjectContext.delete($0)
+                            try! managedObjectContext.save()
+                        }
+                        
+                    })
                 }
                 .toolbar {
-                    Button(action: fosterHome.add, label: {
+                    Button(action: {
+                        fosterHome.edit(note: nil)
+                    }, label: {
                         Image(systemName: "note.text.badge.plus")
                     })
                 }
             }
             Spacer()
         }
-        .sheet(isPresented: $fosterHome.isShowingSheet) {
-            NoteSheetView(content: $fosterHome.content, onSaved: fosterHome.onSaved)
+        .onAppear {
+            removed.removeAll()
+        }
+        .sheet(isPresented: $fosterHome.isEditingNote) {
+            NoteSheetView(note: fosterHome.note){
+                if fosterHome.note.note == nil {
+                    let note = Note()
+                    note.id = UUID()
+                    fosterHome.note.note = note
+                }
+                let note = fosterHome.note.note!
+                note.date = fosterHome.note.date
+                note.content = fosterHome.note.content
+                try? managedObjectContext.save()
+                fosterHome.isEditingNote = false
+            }
+            .environment(\.managedObjectContext, managedObjectContext)
         }
         .navigationBarTitle(fosterHome.name)
         

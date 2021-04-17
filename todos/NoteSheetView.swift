@@ -7,44 +7,61 @@
 
 import SwiftUI
 
-struct NoteSheetView: View {
-    @Environment(\.presentationMode) var presentationMode
-
-    let dateFormatter = DateFormatter()
-    let date = Date()
-    @State var initialContent = ""
-    @Binding var content: String
-    let onSaved: (Date, String) -> Void
-
-    init(content: Binding<String>, onSaved: @escaping (Date, String) -> Void) {
-        dateFormatter.dateFormat = "dd/MM/yy"
-        _content = content
-        self.onSaved = onSaved
+extension NoteSheetView {
+    class ViewModel: ObservableObject {
+        @Published var note: Note?
+        var initialContent = ""
+        @Published var content = ""
+        @Published var date = Date()
+        
+        let dateFormatter = DateFormatter()
+        
+        init() {
+            dateFormatter.dateFormat = "dd/MM/yy"
+        }
+        
+        var canSave: Bool {
+            content != initialContent
+        }
+        
+        var dateText: String {
+            dateFormatter.string(from: date)
+        }
+        
+        func setNote(note: Note?) {
+            self.note = note
+            let content = note?.content ?? ""
+            initialContent = content
+            self.content = content
+            date = note?.date ?? Date()
+        }
     }
+}
+
+struct NoteSheetView: View {
+    @StateObject var note: ViewModel
+    
+    let onSaved: () -> Void
     
     var body: some View {
         VStack {
-            Text(dateFormatter.string(from: date))
-            TextEditor(text: $content)
+            Text(note.dateText)
+            TextEditor(text: $note.content)
                 .padding()
             HStack {
                 Button("Save") {
-                    onSaved(date, content)
-                    presentationMode.wrappedValue.dismiss()
+                    onSaved()
                 }
                 .padding()
-                .disabled(content.isEmpty || content == initialContent)
+                .disabled(!note.canSave)
             }
-        }
-        .onAppear {
-            initialContent = content
         }
     }
 }
 
 struct NoteSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        NoteSheetView(content: .constant("")) { _, _ in
+        NoteSheetView(note: NoteSheetView.ViewModel()) {
             
         }
     }

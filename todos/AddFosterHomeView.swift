@@ -6,56 +6,40 @@
 //
 
 import SwiftUI
+import CoreData
 
 extension AddFosterHomeView {
     
     class ViewModel: ObservableObject, Identifiable {
+
+        @Published var name: String = ""
+        @Published var phone: String = ""
+        @Published var maleCount: Int = 0
+        @Published var femaleCount: Int = 0
+        @Published var age: String = ""
                 
-        @Published  var home: FosterHome?
-        var name: String
-        var phone: String
-        var maleCount: Int
-        var femaleCount: Int
-        var age: String
-        
-        init (for fosterHome: FosterHome?) {
-            home = fosterHome
-            name = fosterHome?.name ?? ""
-            phone = fosterHome?.phone ?? ""
-            maleCount = Int(fosterHome?.malesCount ?? 0)
-            femaleCount = Int(fosterHome?.femalesCount ?? 0)
-            age = "\(fosterHome?.age ?? 0)"
+        var canSave: Bool {
+            !name.isEmpty && (Int(age) ?? 0) > 0
         }
-        
-        var id: UUID {
-            home?.id ?? UUID()
+
+        func reset() {
+            name =  ""
+            phone = ""
+            maleCount = 0
+            femaleCount = 0
+            age = ""
         }
-        
-        func save() {
-            guard let age = Int32(self.age) else {
-                return
-            }
-            home?.name = name
-            home?.phone = phone
-            home?.malesCount = Int32(maleCount)
-            home?.femalesCount = Int32(maleCount)
-            home?.age = age
-            try? home?.managedObjectContext?.save()
-        }
-        
         
     }
     
 }
 
-struct ViewModel {
-    
-}
-
 struct AddFosterHomeView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) var managedObjectContext
+
+    @ObservedObject var fosterHome: ViewModel
     
-    @StateObject var fosterHome: ViewModel
+    let onSaved: () -> Void
     
     var body: some View {
         Form {
@@ -75,17 +59,36 @@ struct AddFosterHomeView: View {
                     .keyboardType(.numberPad)
             }
             Section {
-                Button("Salvar", action: fosterHome.save)
-                    .disabled(fosterHome.age.isEmpty || fosterHome.name.isEmpty)
+                Button("Salvar", action: {
+                    
+                    let home = FosterHome(context: managedObjectContext)
+                    home.id = UUID()
+                    home.age = Int32(fosterHome.age) ?? 0
+                    home.femalesCount = Int32(fosterHome.femaleCount)
+                    home.malesCount = Int32(fosterHome.maleCount)
+                    home.name = fosterHome.name
+                    home.phone = fosterHome.phone
+                    
+                    try! managedObjectContext.save()
+                    
+                    fosterHome.reset()
+                    
+                    onSaved()
+                })
+                .disabled(!fosterHome.canSave)
             }
             
         }
+        .navigationTitle("Novo Lt")
     }
 
 }
 
 struct AddFosterHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFosterHomeView(fosterHome: AddFosterHomeView.ViewModel(for: nil))
+        let ctx = PersistenceController.shared.container.viewContext
+        let home = FosterHome(context: ctx)
+        home.id = UUID()
+        return AddFosterHomeView(fosterHome: AddFosterHomeView.ViewModel(), onSaved: {})
     }
 }

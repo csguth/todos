@@ -41,7 +41,9 @@ extension NoteSheetView {
 struct NoteSheetView: View {
     @StateObject var note: ViewModel
     
-    let onSaved: () -> Void
+    @Environment(\.managedObjectContext) var managedObjectContext
+        
+    let onSaved: (Note) -> Void
     
     var body: some View {
         VStack {
@@ -50,7 +52,16 @@ struct NoteSheetView: View {
                 .padding()
             HStack {
                 Button("Save") {
-                    onSaved()
+                    if note.note == nil {
+                        let note = Note(context: managedObjectContext)
+                        note.id = UUID()
+                        self.note.note = note
+                    }
+                    let note = self.note.note!
+                    note.date = self.note.date
+                    note.content = self.note.content
+                    try? managedObjectContext.save()
+                    onSaved(note)
                 }
                 .padding()
                 .disabled(!note.canSave)
@@ -61,7 +72,7 @@ struct NoteSheetView: View {
 
 struct NoteSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        NoteSheetView(note: NoteSheetView.ViewModel()) {
+        NoteSheetView(note: NoteSheetView.ViewModel()) {_ in 
             
         }
     }

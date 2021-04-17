@@ -45,7 +45,6 @@ struct FosterHomeDetailsView: View {
                         .forEach {
                             print("delete \($0)")
                             removed.insert($0)
-                            try! managedObjectContext.save()
                             managedObjectContext.delete($0)
                             try! managedObjectContext.save()
                         }
@@ -66,16 +65,8 @@ struct FosterHomeDetailsView: View {
             removed.removeAll()
         }
         .sheet(isPresented: $fosterHome.isEditingNote) {
-            NoteSheetView(note: fosterHome.note){
-                if fosterHome.note.note == nil {
-                    let note = Note()
-                    note.id = UUID()
-                    fosterHome.note.note = note
-                }
-                let note = fosterHome.note.note!
-                note.date = fosterHome.note.date
-                note.content = fosterHome.note.content
-                try? managedObjectContext.save()
+            NoteSheetView(note: fosterHome.note) { note in
+                fosterHome.fosterHome.addToNotes(note)
                 fosterHome.isEditingNote = false
             }
             .environment(\.managedObjectContext, managedObjectContext)

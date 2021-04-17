@@ -17,7 +17,7 @@ extension FosterHomeDetailsView {
         }
 
         @Published var isEditingNote = false
-        @Published var note = NoteSheetView.ViewModel()
+        @Published var noteBeingEdited = NoteSheetView.ViewModel()
         
         var id: UUID {
             fosterHome.id ?? UUID()
@@ -31,8 +31,8 @@ extension FosterHomeDetailsView {
             fosterHome.notesArray
         }
         
-        func edit(note: Note?) {
-            self.note.setNote(note: note)
+        func edit(note: Note) {
+            self.noteBeingEdited.setNote(note: note)
             isEditingNote = true
         }
     }

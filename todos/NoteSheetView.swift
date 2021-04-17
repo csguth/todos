@@ -28,12 +28,12 @@ extension NoteSheetView {
             dateFormatter.string(from: date)
         }
         
-        func setNote(note: Note?) {
+        func setNote(note: Note) {
             self.note = note
-            let content = note?.content ?? ""
+            let content = note.content ?? ""
             initialContent = content
             self.content = content
-            date = note?.date ?? Date()
+            date = note.date ?? Date()
         }
     }
 }

@@ -13,6 +13,24 @@ struct FosterHomeDetailsView: View {
     @StateObject var fosterHome: ViewModel
     @State var removed = Set<Note>()
 
+    private func createNote() {
+        let note = Note(context: managedObjectContext)
+        note.id = UUID()
+        fosterHome.edit(note: note)
+    }
+    
+    private func deleteNotes(notes: [Note]) {
+        notes.forEach{ removed.insert($0) }
+        notes.forEach(managedObjectContext.delete)
+        try! managedObjectContext.save()
+    }
+    
+    private func addNote(note: Note) {
+        fosterHome.fosterHome.addToNotes(note)
+        try! managedObjectContext.save()
+        fosterHome.isEditingNote = false
+    }
+    
     var body: some View {
         VStack {
             FosterHomeSummaryView(fosterHome: FosterHomeSummaryView.ViewModel(for: fosterHome.fosterHome ))
@@ -20,9 +38,7 @@ struct FosterHomeDetailsView: View {
             if fosterHome.notes.isEmpty {
                 VStack {
                     Text("Sem notas")
-                    Button("Criar uma!", action: {
-                        fosterHome.edit(note: nil)
-                    })
+                    Button("Criar uma!", action: createNote)
                 }
             }
             else
@@ -38,23 +54,10 @@ struct FosterHomeDetailsView: View {
                             
                         }
                     }
-                    .onDelete(perform: { indexSet in
-                        indexSet.map{
-                            fosterHome.notes[$0]
-                        }
-                        .forEach {
-                            print("delete \($0)")
-                            removed.insert($0)
-                            managedObjectContext.delete($0)
-                            try! managedObjectContext.save()
-                        }
-                        
-                    })
+                    .onDelete(perform: { $0.map{ fosterHome.notes[$0] }.forEach(addNote)})
                 }
                 .toolbar {
-                    Button(action: {
-                        fosterHome.edit(note: nil)
-                    }, label: {
+                    Button(action: createNote, label: {
                         Image(systemName: "note.text.badge.plus")
                     })
                 }
@@ -65,10 +68,7 @@ struct FosterHomeDetailsView: View {
             removed.removeAll()
         }
         .sheet(isPresented: $fosterHome.isEditingNote) {
-            NoteSheetView(note: fosterHome.note) { note in
-                fosterHome.fosterHome.addToNotes(note)
-                fosterHome.isEditingNote = false
-            }
+            NoteSheetView(note: self.fosterHome.noteBeingEdited, onSaved: addNote)
             .environment(\.managedObjectContext, managedObjectContext)
         }
         .navigationBarTitle(fosterHome.name)

@@ -19,9 +19,9 @@ struct FosterHomeDetailsView: View {
         fosterHome.edit(note: note)
     }
     
-    private func deleteNotes(notes: [Note]) {
-        notes.forEach{ removed.insert($0) }
-        notes.forEach(managedObjectContext.delete)
+    private func deleteNote(note: Note) {
+        removed.insert(note)
+        managedObjectContext.delete(note)
         try! managedObjectContext.save()
     }
     
@@ -54,7 +54,7 @@ struct FosterHomeDetailsView: View {
                             
                         }
                     }
-                    .onDelete(perform: { $0.map{ fosterHome.notes[$0] }.forEach(addNote)})
+                    .onDelete(perform: { $0.map{ fosterHome.notes[$0] }.forEach(deleteNote)})
                 }
                 .toolbar {
                     Button(action: createNote, label: {
@@ -68,7 +68,7 @@ struct FosterHomeDetailsView: View {
             removed.removeAll()
         }
         .sheet(isPresented: $fosterHome.isEditingNote) {
-            NoteSheetView(note: self.fosterHome.noteBeingEdited, onSaved: addNote)
+            NoteSheetView(note: fosterHome.noteBeingEdited, onSaved: addNote)
             .environment(\.managedObjectContext, managedObjectContext)
         }
         .navigationBarTitle(fosterHome.name)

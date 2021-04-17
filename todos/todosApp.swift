@@ -14,7 +14,7 @@ struct todosApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                FosterHomesView()
+                FosterHomesView(fosterHomes: FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext))
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }

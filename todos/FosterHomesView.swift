@@ -8,6 +8,26 @@
 import SwiftUI
 import CoreData
 
+extension FosterHomesView {
+    class ViewModel: ObservableObject {
+        
+        @Published var fosterHomeBeingEdited: EditFosterHomeView.ViewModel
+        @Published var isEditing = false
+        
+        init(ctx: NSManagedObjectContext) {
+            fosterHomeBeingEdited = EditFosterHomeView.ViewModel(with: ctx)
+        }
+        
+        func create() {
+            if isEditing {
+                return
+            }
+            fosterHomeBeingEdited.reset()
+            isEditing = true
+        }
+    }
+}
+
 struct FosterHomesView: View {
     
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -17,18 +37,23 @@ struct FosterHomesView: View {
         sortDescriptors: []
     ) var homes: FetchedResults<FosterHome>
     
-    @State var isAdding = false
+    @StateObject var fosterHomes: ViewModel
     
+    private func deleteFosterHome(fosterHome: FosterHome) {
+        managedObjectContext.delete(fosterHome)
+        try! managedObjectContext.save()
+    }
+    
+    private func toggleEditing() {
+        fosterHomes.isEditing.toggle()
+    }
+        
     var body: some View {
         ZStack {
             if homes.isEmpty {
                 VStack {
                     Text("Sem LTs")
-                    Button(action: {
-                        isAdding.toggle()
-                    }, label: {
-                        Text("Adicionar")
-                    })
+                    Button("Adicionar!", action: fosterHomes.create)
                 }
             }
             else {
@@ -41,17 +66,12 @@ struct FosterHomesView: View {
                                 Text(home.wrappedName)
                             })
                     }
-                    .onDelete(perform: { indexSet in
-                        indexSet
-                            .map { homes[$0] }
-                            .forEach(managedObjectContext.delete)
-                        try? managedObjectContext.save()
-                    })
+                    .onDelete(perform: { $0.map{ homes[$0] }.forEach(deleteFosterHome)})
                 }
                 
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: { isAdding.toggle() }, label: {
+                        Button(action: fosterHomes.create, label: {
                             Image(systemName: "plus")
                         })
                     }
@@ -60,11 +80,9 @@ struct FosterHomesView: View {
         }
         .navigationBarTitle("Lares Temporários")
         .background(
-            NavigationLink(destination: AddFosterHomeView(fosterHome: AddFosterHomeView.ViewModel())  {
-                isAdding = false
-            }
+            NavigationLink(destination: EditFosterHomeView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: toggleEditing)
             .environment(\.managedObjectContext, managedObjectContext),
-            isActive: $isAdding) {
+                           isActive: $fosterHomes.isEditing) {
                 EmptyView()
             }
         )
@@ -74,7 +92,7 @@ struct FosterHomesView: View {
 struct FosterHomesView_Previews: PreviewProvider {
     static var previews: some View {
         let persistenceController = PersistenceController.preview
-        FosterHomesView()
+        FosterHomesView(fosterHomes: FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext))
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }

@@ -51,7 +51,7 @@ struct NoteSheetView: View {
             TextEditor(text: $note.content)
                 .padding()
             HStack {
-                Button("Save") {
+                Button("Salvar") {
                     if note.note == nil {
                         let note = Note(context: managedObjectContext)
                         note.id = UUID()

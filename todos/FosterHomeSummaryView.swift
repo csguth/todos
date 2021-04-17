@@ -9,10 +9,24 @@ import SwiftUI
 
 struct FosterHomeSummaryView: View {
     
+    @Environment(\.managedObjectContext) var managedObjectContext
+
     @ObservedObject var fosterHome: ViewModel
 
+    @State var editing = false
+    
     var body: some View {
-        return Text(fosterHome.text)
+        HStack {
+            Text(fosterHome.text)
+            Spacer()
+            NavigationLink(destination: EditFosterHomeView(fosterHome: EditFosterHomeView.ViewModel(from: fosterHome.fosterHome), onSave: {
+                editing = false
+            })
+            .environment(\.managedObjectContext, managedObjectContext),
+            isActive: $editing) {
+                Text("Editar informações")
+            }
+        }.padding()
     }
 }
 
@@ -24,16 +38,17 @@ extension FosterHomeSummaryView {
             _fosterHome = Published(wrappedValue: fosterHome)
         }
         
-        private func makeText(count: Int, letter: Character) -> String {
-            count > 0 ? "\(count)\(letter)": ""
+        private func makeText(count: Int, text: String) -> String {
+            let plural = count > 1 ? "s" : ""
+            return count > 0 ? "\(count) \(text)\(plural)": ""
         }
         
         private var plus: String {
-            fosterHome.malesCount > 0 && fosterHome.femalesCount > 0 ? "+ " : ""
+            fosterHome.malesCount > 0 && fosterHome.femalesCount > 0 ? " + " : ""
         }
         
         var text: String {
-            return makeText(count: Int(fosterHome.malesCount), letter: "M") + plus + makeText(count: Int(fosterHome.femalesCount), letter: "F")
+            return makeText(count: Int(fosterHome.malesCount), text: "macho") + plus + makeText(count: Int(fosterHome.femalesCount), text: "fêmea")
         }
         
     }
@@ -48,8 +63,7 @@ struct FosterHomeSummaryView_Previews: PreviewProvider {
         fosterHome.femalesCount = 2
         fosterHome.malesCount = 1
 
-        return Text("")
-//        return FosterHomeSummaryView(fosterHome: FosterHomeSummaryView.ViewModel)
-//        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        return FosterHomeSummaryView(fosterHome: FosterHomeSummaryView.ViewModel(for: fosterHome))
+        .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }

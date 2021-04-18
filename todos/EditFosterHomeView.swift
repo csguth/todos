@@ -8,75 +8,93 @@
 import SwiftUI
 import CoreData
 
+extension Date {
+    
+    func daysBetween(date: Date) -> Int {
+        return Date.daysBetween(start: self, end: date)
+    }
+    
+    static func daysBetween(start: Date, end: Date) -> Int {
+        let calendar = Calendar.current
+        
+        // Replace the hour (time) of both dates with 00:00
+        let date1 = calendar.startOfDay(for: start)
+        let date2 = calendar.startOfDay(for: end)
+        
+        let a = calendar.dateComponents([.day], from: date1, to: date2)
+        return a.value(for: .day)!
+    }
+    
+    static var sevenDaysAgo: Date {
+        Date().addingTimeInterval(-7 * 24 * 60 * 60)
+    }
+}
+
 extension EditFosterHomeView {
     
     class ViewModel: ObservableObject, Identifiable {
         
+        var home: FosterHome?
         let managedObjectContext: NSManagedObjectContext
-
-        @Published var name0: String = ""
-        @Published var phone0: String = ""
-        @Published var maleCount0: Int = 0
-        @Published var femaleCount0: Int = 0
-        @Published var age0: String = ""
         
-        @Published var name: String = ""
-        @Published var phone: String = ""
-        @Published var maleCount: Int = 0
-        @Published var femaleCount: Int = 0
-        @Published var age: String = ""
+        @Published var name: String
+        @Published var phone: String
+        @Published var maleCount: Int
+        @Published var femaleCount: Int
+        @Published var date: Date
         
         init (with ctx: NSManagedObjectContext) {
+            home = nil
             managedObjectContext = ctx
             name = ""
             phone = ""
             maleCount = 0
             femaleCount = 0
-            age = ""
-            name0 = ""
-            phone0 = ""
-            maleCount0 = 0
-            femaleCount0 = 0
-            age0 = ""
+            date = Date.sevenDaysAgo
+        }
+        
+        var ageInDays: String {
+            let date = home?.date ?? Date()
+            let daysCount = date.daysBetween(date: Date())
+            return daysCount == 0 ? "" : "\(daysCount)"
         }
         
         init (from fosterHome: FosterHome) {
+            home = fosterHome
             managedObjectContext = fosterHome.managedObjectContext ?? PersistenceController.shared.container.viewContext
             name = fosterHome.name ?? ""
             phone = fosterHome.phone ?? ""
             maleCount = Int(fosterHome.malesCount)
             femaleCount = Int(fosterHome.femalesCount)
-            age = fosterHome.age == 0 ? "" : "\(fosterHome.age)"
-            name0 = fosterHome.name ?? ""
-            phone0 = fosterHome.phone ?? ""
-            maleCount0 = Int(fosterHome.malesCount)
-            femaleCount0 = Int(fosterHome.femalesCount)
-            age0 = fosterHome.age == 0 ? "" : "\(fosterHome.age)"
+            date = fosterHome.date ?? Date.sevenDaysAgo
         }
         
         var canSave: Bool {
-            !name.isEmpty && (Int(age) ?? 0) > 0 && (name != name0 || phone != phone0 || maleCount != maleCount0 || femaleCount != femaleCount0 || age != age0)
+            return (!name.isEmpty && date.daysBetween(date: Date()) > 0) && ((name != home?.name) || (phone != home?.phone) || (maleCount != Int(home?.malesCount ?? 0)) || (femaleCount != Int(home?.femalesCount ?? 0)) || (date != home?.date))
+        }
+        
+        var age: String {
+            let days = date.daysBetween(date: Date())
+            let plural = days > 1 ? "s" : ""
+            return "\(days) dia\(plural)"
         }
         
         func set(fosterHome: FosterHome) {
+            home = fosterHome
             name = fosterHome.name ?? ""
             phone = fosterHome.phone ?? ""
             maleCount = Int(fosterHome.malesCount)
             femaleCount = Int(fosterHome.femalesCount)
-            age = fosterHome.age == 0 ? "" : "\(fosterHome.age)"
-            name0 = fosterHome.name ?? ""
-            phone0 = fosterHome.phone ?? ""
-            maleCount0 = Int(fosterHome.malesCount)
-            femaleCount0 = Int(fosterHome.femalesCount)
-            age0 = fosterHome.age == 0 ? "" : "\(fosterHome.age)"
+            date = fosterHome.date ?? Date.sevenDaysAgo
         }
         
         func reset() {
-            name = name0
-            phone = phone0
-            maleCount = maleCount0
-            femaleCount = femaleCount0
-            age = age0
+            home = nil
+            name = home?.name ?? ""
+            phone = home?.phone ?? ""
+            maleCount = Int(home?.malesCount ?? 0)
+            femaleCount = Int(home?.femalesCount ?? 0)
+            date = home?.date ?? Date.sevenDaysAgo
         }
         
     }
@@ -104,15 +122,22 @@ struct EditFosterHomeView: View {
                 Stepper(value: $fosterHome.femaleCount, in: 0...10) {
                     Text("\(fosterHome.femaleCount) fêmeas")
                 }
-                TextField("Idade em dias", text: $fosterHome.age)
-                    .keyboardType(.numberPad)
+                DatePicker(
+                    "Nascimento (\(fosterHome.age))",
+                    selection: $fosterHome.date,
+                    in: ...Date(),
+                    displayedComponents: [.date]
+                )
             }
             Section {
                 Button("Salvar", action: {
-                    
-                    let home = FosterHome(context: managedObjectContext)
-                    home.id = UUID()
-                    home.age = Int32(fosterHome.age) ?? 0
+                    if fosterHome.home == nil {
+                        let home = FosterHome(context: managedObjectContext)
+                        home.id = UUID()
+                        self.fosterHome.home = home
+                    }
+                    let home = self.fosterHome.home!
+                    home.date = fosterHome.date
                     home.femalesCount = Int32(fosterHome.femaleCount)
                     home.malesCount = Int32(fosterHome.maleCount)
                     home.name = fosterHome.name

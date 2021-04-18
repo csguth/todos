@@ -54,7 +54,12 @@ struct FosterHomeDetailsView: View {
                             
                         }
                     }
-                    .onDelete(perform: { $0.map{ fosterHome.notes[$0] }.forEach(deleteNote)})
+                    .onDelete(perform: { indexSet in
+                        
+                        let notes = indexSet.map{ fosterHome.notes[$0] }
+                        notes.forEach(deleteNote)
+                        
+                    })
                 }
                 .toolbar {
                     Button(action: createNote, label: {

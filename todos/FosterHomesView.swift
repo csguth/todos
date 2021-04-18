@@ -11,10 +11,12 @@ import CoreData
 extension FosterHomesView {
     class ViewModel: ObservableObject {
         
+        var managedObjectContext: NSManagedObjectContext
         @Published var fosterHomeBeingEdited: EditFosterHomeView.ViewModel
         @Published var isEditing = false
         
         init(ctx: NSManagedObjectContext) {
+            managedObjectContext = ctx
             fosterHomeBeingEdited = EditFosterHomeView.ViewModel(with: ctx)
         }
         
@@ -24,6 +26,16 @@ extension FosterHomesView {
             }
             fosterHomeBeingEdited.reset()
             isEditing = true
+        }
+        
+        func onFinishedEditing() {
+            isEditing = false
+        }
+        
+        
+        func deleteFosterHome(fosterHome: FosterHome) {
+            managedObjectContext.delete(fosterHome)
+            try! managedObjectContext.save()
         }
     }
 }
@@ -39,15 +51,6 @@ struct FosterHomesView: View {
     
     @StateObject var fosterHomes: ViewModel
     
-    private func deleteFosterHome(fosterHome: FosterHome) {
-        managedObjectContext.delete(fosterHome)
-        try! managedObjectContext.save()
-    }
-    
-    private func toggleEditing() {
-        fosterHomes.isEditing.toggle()
-    }
-        
     var body: some View {
         ZStack {
             if homes.isEmpty {
@@ -66,7 +69,12 @@ struct FosterHomesView: View {
                                 Text(home.wrappedName)
                             })
                     }
-                    .onDelete(perform: { $0.map{ homes[$0] }.forEach(deleteFosterHome)})
+                    .onDelete(perform: { indexSet in
+                        
+                        let fosterHomes = indexSet.map{ homes[$0] }
+                        fosterHomes.forEach(self.fosterHomes.deleteFosterHome)
+                        
+                    })
                 }
                 
                 .toolbar {
@@ -80,7 +88,7 @@ struct FosterHomesView: View {
         }
         .navigationBarTitle("Lares Temporários")
         .background(
-            NavigationLink(destination: EditFosterHomeView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: toggleEditing)
+            NavigationLink(destination: EditFosterHomeView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: fosterHomes.onFinishedEditing)
             .environment(\.managedObjectContext, managedObjectContext),
                            isActive: $fosterHomes.isEditing) {
                 EmptyView()

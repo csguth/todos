@@ -19,9 +19,12 @@ struct FosterHomeSummaryView: View {
         HStack {
             Text(fosterHome.text)
             Spacer()
-            NavigationLink(destination: EditFosterHomeView(fosterHome: EditFosterHomeView.ViewModel(from: fosterHome.fosterHome), onSave: {
+            NavigationLink(destination: EditFosterHomeView(fosterHome: fosterHome.beingEdited, onSave: {
                 editing = false
             })
+            .onAppear{
+                fosterHome.beingEdited.set(fosterHome: fosterHome.fosterHome)
+            }
             .environment(\.managedObjectContext, managedObjectContext),
             isActive: $editing) {
                 Text("Editar informações")
@@ -34,8 +37,11 @@ extension FosterHomeSummaryView {
     class ViewModel: ObservableObject {
         @Published var fosterHome: FosterHome
         
+        @Published var beingEdited: EditFosterHomeView.ViewModel
+        
         init(for fosterHome: FosterHome) {
             _fosterHome = Published(wrappedValue: fosterHome)
+            beingEdited = EditFosterHomeView.ViewModel(from: fosterHome)
         }
         
         private func makeText(count: Int, text: String) -> String {

@@ -6,6 +6,9 @@
 //
 
 import XCTest
+
+import CoreData
+
 @testable import todos
 
 class todosTests: XCTestCase {
@@ -18,9 +21,14 @@ class todosTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testEditingState() throws {
+        let persistenceController = PersistenceController.preview
+        let viewModel = FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext)
+        XCTAssert(!viewModel.isEditing)
+        viewModel.create()
+        XCTAssert(viewModel.isEditing)
+        viewModel.onFinishedEditing()
+        XCTAssert(!viewModel.isEditing)
     }
 
     func testPerformanceExample() throws {

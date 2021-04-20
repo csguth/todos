@@ -24,7 +24,7 @@ extension FosterHomesView {
             if isEditing {
                 return
             }
-            fosterHomeBeingEdited.reset()
+            fosterHomeBeingEdited.set(fosterHome: nil)
             isEditing = true
         }
         

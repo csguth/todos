@@ -53,12 +53,6 @@ extension EditFosterHomeView {
             date = Date.sevenDaysAgo
         }
         
-        var ageInDays: String {
-            let date = home?.date ?? Date()
-            let daysCount = date.daysBetween(date: Date())
-            return daysCount == 0 ? "" : "\(daysCount)"
-        }
-        
         init (from fosterHome: FosterHome) {
             home = fosterHome
             managedObjectContext = fosterHome.managedObjectContext ?? PersistenceController.shared.container.viewContext
@@ -70,7 +64,17 @@ extension EditFosterHomeView {
         }
         
         var canSave: Bool {
-            return (!name.isEmpty && date.daysBetween(date: Date()) > 0) && ((name != home?.name) || (phone != home?.phone) || (maleCount != Int(home?.malesCount ?? 0)) || (femaleCount != Int(home?.femalesCount ?? 0)) || (date != home?.date))
+            return (
+                !name.isEmpty &&
+                date.daysBetween(date: Date()) > 0) &&
+                (femaleCount + maleCount >= 1) &&
+                (
+                    (name != home?.name) ||
+                    (phone != home?.phone) ||
+                    (maleCount != Int(home?.malesCount ?? 0)) ||
+                    (femaleCount != Int(home?.femalesCount ?? 0)) ||
+                    (date != home?.date)
+                )
         }
         
         var age: String {
@@ -79,22 +83,13 @@ extension EditFosterHomeView {
             return "\(days) dia\(plural)"
         }
         
-        func set(fosterHome: FosterHome) {
+        func set(fosterHome: FosterHome?) {
             home = fosterHome
-            name = fosterHome.name ?? ""
-            phone = fosterHome.phone ?? ""
-            maleCount = Int(fosterHome.malesCount)
-            femaleCount = Int(fosterHome.femalesCount)
-            date = fosterHome.date ?? Date.sevenDaysAgo
-        }
-        
-        func reset() {
-            home = nil
-            name = home?.name ?? ""
-            phone = home?.phone ?? ""
-            maleCount = Int(home?.malesCount ?? 0)
-            femaleCount = Int(home?.femalesCount ?? 0)
-            date = home?.date ?? Date.sevenDaysAgo
+            name = fosterHome?.name ?? ""
+            phone = fosterHome?.phone ?? ""
+            maleCount = Int(fosterHome?.malesCount ?? 0)
+            femaleCount = Int(fosterHome?.femalesCount ?? 0)
+            date = fosterHome?.date ?? Date.sevenDaysAgo
         }
         
     }
@@ -153,7 +148,9 @@ struct EditFosterHomeView: View {
         }
         .navigationTitle("Configuração do Lt")
         .navigationBarBackButtonHidden(true)
-        .onAppear(perform: fosterHome.reset)
+        .onAppear{
+            fosterHome.set(fosterHome: nil)
+        }
     }
 
 }

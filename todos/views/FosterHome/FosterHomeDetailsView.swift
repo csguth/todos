@@ -28,7 +28,7 @@ struct FosterHomeDetailsView: View {
     private func addNote(note: Note) {
         fosterHome.fosterHome.addToNotes(note)
         try! managedObjectContext.save()
-        fosterHome.isEditingNote = false
+//        fosterHome.isEditingNote = false
     }
     
     var body: some View {
@@ -49,7 +49,7 @@ struct FosterHomeDetailsView: View {
                             Button(action: {
                                 fosterHome.edit(note: note)
                             }, label: {
-                                NoteView(note: note)
+                                NoteCardView(for: note)
                             })
                             
                         }
@@ -72,8 +72,8 @@ struct FosterHomeDetailsView: View {
         .onAppear {
             removed.removeAll()
         }
-        .sheet(isPresented: $fosterHome.isEditingNote) {
-            NoteSheetView(note: fosterHome.noteBeingEdited, onSaved: addNote)
+        .sheet(isPresented: .constant(true)) {
+            NoteEditView(note: fosterHome.noteBeingEdited as! NoteEditView.ViewModel)
             .environment(\.managedObjectContext, managedObjectContext)
         }
         .navigationBarTitle(fosterHome.name)
@@ -111,7 +111,10 @@ struct ContentView_Previews: PreviewProvider {
         fosterHome.femalesCount = 2
         fosterHome.malesCount = 4
         
-        let model = FosterHomeDetailsView.ViewModel(for: fosterHome)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yy HH:ii"
+        
+        let model = FosterHomeDetailsView.ViewModel(for: fosterHome, with: dateFormatter)
         
         return FosterHomeDetailsView(fosterHome: model)
         .environment(\.managedObjectContext, persistenceController.container.viewContext)

@@ -11,13 +11,14 @@ extension FosterHomeDetailsView {
     
     class ViewModel: ObservableObject, Identifiable {
         @Published var fosterHome: FosterHome
+        @Published var noteBeingEdited: NoteEditView.ViewModel? = nil
         
-        init (for fosterHome: FosterHome) {
+        let dateFormatter: DateFormatter
+        
+        init (for fosterHome: FosterHome, with aDateFormatter: DateFormatter) {
             _fosterHome = Published(wrappedValue: fosterHome)
+            dateFormatter = aDateFormatter
         }
-
-        @Published var isEditingNote = false
-        @Published var noteBeingEdited = NoteSheetView.ViewModel()
         
         var id: UUID {
             fosterHome.id ?? UUID()
@@ -27,14 +28,19 @@ extension FosterHomeDetailsView {
             fosterHome.name ?? ""
         }
         
+        var isEditingNote: Bool {
+            noteBeingEdited != nil
+        }
+        
         var notes: [Note] {
             fosterHome.notesArray
         }
         
         func edit(note: Note) {
-            self.noteBeingEdited.setNote(note: note)
-            isEditingNote = true
+            
         }
+        
+        
     }
     
 

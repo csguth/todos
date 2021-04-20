@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-struct NoteView: View {
+struct NoteCardView: View {
     
-    @ObservedObject var note: Note
-    
+    let note: Note
     let dateFormatter = DateFormatter()
 
-    init(note: Note) {
-        _note = ObservedObject(wrappedValue: note)
+    init(for aNote: Note) {
+        note = aNote
         dateFormatter.dateFormat = "dd/MM/yy hh:mm"
     }
     
@@ -35,6 +34,6 @@ struct TodoView_Previews: PreviewProvider {
         let persistenceController = PersistenceController.preview
         let note = Note(context: persistenceController.container.viewContext)
         note.content = "the note content"
-        return NoteView(note: note)
+        return NoteCardView(for: note)
     }
 }

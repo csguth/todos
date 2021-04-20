@@ -34,7 +34,7 @@ class todosTests: XCTestCase {
     }
     
     func testDefaultEditFosterHomeViewViewModelIsEmpty() throws {
-        let mainModel = EditFosterHomeView.ViewModel(with: persistenceController.container.viewContext)
+        let mainModel = FosterHomeEditView.ViewModel(with: persistenceController.container.viewContext)
         XCTAssertNil(mainModel.home)
         XCTAssert(!mainModel.canSave)
         XCTAssertEqual(mainModel.name, "")
@@ -46,7 +46,7 @@ class todosTests: XCTestCase {
     }
     
     func testAgeInDays() throws {
-        let mainModel = EditFosterHomeView.ViewModel(with: persistenceController.container.viewContext)
+        let mainModel = FosterHomeEditView.ViewModel(with: persistenceController.container.viewContext)
         mainModel.date = Date().advanced(by: -7 * 24 * 60 * 60)
         XCTAssertEqual(mainModel.age, "7 dias")
         
@@ -58,7 +58,7 @@ class todosTests: XCTestCase {
     }
     
     func testCanSaveOnlyIfTheresANameAndAtLeastOneAnimal() throws {
-        let mainModel = EditFosterHomeView.ViewModel(with: persistenceController.container.viewContext)
+        let mainModel = FosterHomeEditView.ViewModel(with: persistenceController.container.viewContext)
         XCTAssert(!mainModel.canSave)
         mainModel.femaleCount = 1
         mainModel.name = "a"

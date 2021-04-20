@@ -8,38 +8,6 @@
 import SwiftUI
 import CoreData
 
-extension FosterHomesView {
-    class ViewModel: ObservableObject {
-        
-        var managedObjectContext: NSManagedObjectContext
-        @Published var fosterHomeBeingEdited: EditFosterHomeView.ViewModel
-        @Published var isEditing = false
-        
-        init(ctx: NSManagedObjectContext) {
-            managedObjectContext = ctx
-            fosterHomeBeingEdited = EditFosterHomeView.ViewModel(with: ctx)
-        }
-        
-        func create() {
-            if isEditing {
-                return
-            }
-            fosterHomeBeingEdited.set(fosterHome: nil)
-            isEditing = true
-        }
-        
-        func onFinishedEditing() {
-            isEditing = false
-        }
-        
-        
-        func deleteFosterHome(fosterHome: FosterHome) {
-            managedObjectContext.delete(fosterHome)
-            try! managedObjectContext.save()
-        }
-    }
-}
-
 struct FosterHomesView: View {
     
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -63,7 +31,7 @@ struct FosterHomesView: View {
                 List {
                     ForEach(homes) { home in
                         NavigationLink(
-                            destination: FosterHomeDetailsView(fosterHome: FosterHomeDetailsView.ViewModel(for: home))
+                            destination: FosterHomeDetailsView(fosterHome: FosterHomeDetailsView.ViewModel(for: home, with: DateFormatter()))
                                 .environment(\.managedObjectContext, managedObjectContext),
                             label: {
                                 Text(home.wrappedName)
@@ -88,7 +56,7 @@ struct FosterHomesView: View {
         }
         .navigationBarTitle("Lares Temporários")
         .background(
-            NavigationLink(destination: EditFosterHomeView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: fosterHomes.onFinishedEditing)
+            NavigationLink(destination: FosterHomeEditView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: fosterHomes.onFinishedEditing)
             .environment(\.managedObjectContext, managedObjectContext),
                            isActive: $fosterHomes.isEditing) {
                 EmptyView()

@@ -14,13 +14,18 @@
 		6D166B202622E24000B1DF67 /* todosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B1F2622E24000B1DF67 /* todosTests.swift */; };
 		6D166B2B2622E24000B1DF67 /* todosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B2A2622E24000B1DF67 /* todosUITests.swift */; };
 		6D60EB1F262309CF007726B7 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB1E262309CF007726B7 /* Note.swift */; };
-		6D60EB2726232C1E007726B7 /* NoteSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2626232C1E007726B7 /* NoteSheetView.swift */; };
-		6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2B26232D00007726B7 /* NoteView.swift */; };
+		6D60EB2726232C1E007726B7 /* NoteEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2626232C1E007726B7 /* NoteEditView.swift */; };
+		6D60EB2C26232D00007726B7 /* NoteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2B26232D00007726B7 /* NoteCardView.swift */; };
 		6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB3026233164007726B7 /* FosterHomesView.swift */; };
 		6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB38262331DA007726B7 /* FosterHome.swift */; };
 		6D91935726276D7C0024522C /* FosterHomeSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */; };
 		6D9604B7262775710098728C /* FosterHomeDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */; };
-		6DA0CD0E2623741700448FE7 /* EditFosterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */; };
+		6DA0CD0E2623741700448FE7 /* FosterHomeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA0CD0D2623741700448FE7 /* FosterHomeEditView.swift */; };
+		6DB06C40262F5A3E001EFFAF /* EditFosterHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB06C3F262F5A3E001EFFAF /* EditFosterHomeViewModel.swift */; };
+		6DB06C45262F5AD3001EFFAF /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB06C44262F5AD3001EFFAF /* Date.swift */; };
+		6DB06C4D262F5B19001EFFAF /* NoteEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB06C4C262F5B19001EFFAF /* NoteEditViewModel.swift */; };
+		6DB06C52262F5B40001EFFAF /* FosterHomesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB06C51262F5B40001EFFAF /* FosterHomesViewModel.swift */; };
+		6DB06C57262F5BA3001EFFAF /* FosterHomeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB06C56262F5BA3001EFFAF /* FosterHomeSummaryViewModel.swift */; };
 		6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD23492623001F0070312E /* PersistanceController.swift */; };
 		6DDD2354262304060070312E /* FosterTheKitten.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B532622EEC700B1DF67 /* FosterTheKitten.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -57,13 +62,18 @@
 		6D166B2C2622E24000B1DF67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6D166B542622EEC700B1DF67 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		6D60EB1E262309CF007726B7 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		6D60EB2626232C1E007726B7 /* NoteSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSheetView.swift; sourceTree = "<group>"; };
-		6D60EB2B26232D00007726B7 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
+		6D60EB2626232C1E007726B7 /* NoteEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditView.swift; sourceTree = "<group>"; };
+		6D60EB2B26232D00007726B7 /* NoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCardView.swift; sourceTree = "<group>"; };
 		6D60EB3026233164007726B7 /* FosterHomesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesView.swift; sourceTree = "<group>"; };
 		6D60EB38262331DA007726B7 /* FosterHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHome.swift; sourceTree = "<group>"; };
 		6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeSummaryView.swift; sourceTree = "<group>"; };
 		6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeDetailsViewModel.swift; sourceTree = "<group>"; };
-		6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFosterHomeView.swift; sourceTree = "<group>"; };
+		6DA0CD0D2623741700448FE7 /* FosterHomeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeEditView.swift; sourceTree = "<group>"; };
+		6DB06C3F262F5A3E001EFFAF /* EditFosterHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditFosterHomeViewModel.swift; path = todos/viewmodel/FosterHome/EditFosterHomeViewModel.swift; sourceTree = SOURCE_ROOT; };
+		6DB06C44262F5AD3001EFFAF /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		6DB06C4C262F5B19001EFFAF /* NoteEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NoteEditViewModel.swift; path = todos/viewmodel/NoteEditViewModel.swift; sourceTree = SOURCE_ROOT; };
+		6DB06C51262F5B40001EFFAF /* FosterHomesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesViewModel.swift; sourceTree = "<group>"; };
+		6DB06C56262F5BA3001EFFAF /* FosterHomeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeSummaryViewModel.swift; sourceTree = "<group>"; };
 		6DDD23492623001F0070312E /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,17 +126,11 @@
 		6D166B0C2622E23F00B1DF67 /* todos */ = {
 			isa = PBXGroup;
 			children = (
-				6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */,
-				6D60EB3026233164007726B7 /* FosterHomesView.swift */,
-				6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */,
+				6D4A4C7A262F569B0056FCFA /* model */,
+				6D4A4C79262F56870056FCFA /* viewmodel */,
+				6D4A4C78262F56780056FCFA /* views */,
 				6D166B0D2622E23F00B1DF67 /* todosApp.swift */,
 				6DDD23492623001F0070312E /* PersistanceController.swift */,
-				6D166B0F2622E23F00B1DF67 /* FosterHomeDetailsView.swift */,
-				6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */,
-				6D60EB2B26232D00007726B7 /* NoteView.swift */,
-				6D60EB2626232C1E007726B7 /* NoteSheetView.swift */,
-				6D60EB1E262309CF007726B7 /* Note.swift */,
-				6D60EB38262331DA007726B7 /* FosterHome.swift */,
 				6D166B112622E24000B1DF67 /* Assets.xcassets */,
 				6D166B162622E24000B1DF67 /* Info.plist */,
 				6D166B132622E24000B1DF67 /* Preview Content */,
@@ -158,6 +162,65 @@
 				6D166B2C2622E24000B1DF67 /* Info.plist */,
 			);
 			path = todosUITests;
+			sourceTree = "<group>";
+		};
+		6D4A4C78262F56780056FCFA /* views */ = {
+			isa = PBXGroup;
+			children = (
+				6DB06C61262F5C39001EFFAF /* Note */,
+				6DB06C60262F5C16001EFFAF /* FosterHome */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		6D4A4C79262F56870056FCFA /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				6DB06C65262F5E5B001EFFAF /* FosterHome */,
+				6DB06C4C262F5B19001EFFAF /* NoteEditViewModel.swift */,
+			);
+			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		6D4A4C7A262F569B0056FCFA /* model */ = {
+			isa = PBXGroup;
+			children = (
+				6DB06C44262F5AD3001EFFAF /* Date.swift */,
+				6D60EB1E262309CF007726B7 /* Note.swift */,
+				6D60EB38262331DA007726B7 /* FosterHome.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		6DB06C60262F5C16001EFFAF /* FosterHome */ = {
+			isa = PBXGroup;
+			children = (
+				6DA0CD0D2623741700448FE7 /* FosterHomeEditView.swift */,
+				6D166B0F2622E23F00B1DF67 /* FosterHomeDetailsView.swift */,
+				6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */,
+				6D60EB3026233164007726B7 /* FosterHomesView.swift */,
+			);
+			path = FosterHome;
+			sourceTree = "<group>";
+		};
+		6DB06C61262F5C39001EFFAF /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				6D60EB2626232C1E007726B7 /* NoteEditView.swift */,
+				6D60EB2B26232D00007726B7 /* NoteCardView.swift */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
+		6DB06C65262F5E5B001EFFAF /* FosterHome */ = {
+			isa = PBXGroup;
+			children = (
+				6DB06C56262F5BA3001EFFAF /* FosterHomeSummaryViewModel.swift */,
+				6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */,
+				6DB06C51262F5B40001EFFAF /* FosterHomesViewModel.swift */,
+				6DB06C3F262F5A3E001EFFAF /* EditFosterHomeViewModel.swift */,
+			);
+			path = FosterHome;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,18 +352,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DA0CD0E2623741700448FE7 /* EditFosterHomeView.swift in Sources */,
+				6DA0CD0E2623741700448FE7 /* FosterHomeEditView.swift in Sources */,
 				6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */,
 				6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */,
+				6DB06C40262F5A3E001EFFAF /* EditFosterHomeViewModel.swift in Sources */,
 				6D166B102622E23F00B1DF67 /* FosterHomeDetailsView.swift in Sources */,
+				6DB06C4D262F5B19001EFFAF /* NoteEditViewModel.swift in Sources */,
 				6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */,
-				6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */,
+				6D60EB2C26232D00007726B7 /* NoteCardView.swift in Sources */,
 				6D9604B7262775710098728C /* FosterHomeDetailsViewModel.swift in Sources */,
 				6D166B0E2622E23F00B1DF67 /* todosApp.swift in Sources */,
+				6DB06C45262F5AD3001EFFAF /* Date.swift in Sources */,
+				6DB06C57262F5BA3001EFFAF /* FosterHomeSummaryViewModel.swift in Sources */,
 				6D60EB1F262309CF007726B7 /* Note.swift in Sources */,
 				6D91935726276D7C0024522C /* FosterHomeSummaryView.swift in Sources */,
-				6D60EB2726232C1E007726B7 /* NoteSheetView.swift in Sources */,
+				6D60EB2726232C1E007726B7 /* NoteEditView.swift in Sources */,
 				6DDD2354262304060070312E /* FosterTheKitten.xcdatamodeld in Sources */,
+				6DB06C52262F5B40001EFFAF /* FosterHomesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

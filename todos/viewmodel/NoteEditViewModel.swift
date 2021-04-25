@@ -9,23 +9,26 @@ import Foundation
 import CoreData
 
 extension NoteEditView {
-    class ViewModel: ObservableObject {
+    class ViewModel: ObservableObject, Identifiable {
         let dateFormatter: DateFormatter
         let managedObjectContext: NSManagedObjectContext
         
         @Published var note: Note? = nil
         @Published var content = ""
+        let onSaved: (Note) -> Void
         
-        init(with aDateFormatter: DateFormatter, for aNote: Note) {
+        init(with aDateFormatter: DateFormatter, for aNote: Note, performOnSave onSavedCallback: @escaping (Note) -> Void) {
             dateFormatter = aDateFormatter
             managedObjectContext = aNote.managedObjectContext ?? PersistenceController.shared.container.viewContext
             note = aNote
-            content = note?.content ?? ""
+            content = aNote.wrappedContent
+            onSaved = onSavedCallback
         }
         
-        init(with aDateFormatter: DateFormatter, and aManagedObjectContext: NSManagedObjectContext) {
+        init(with aDateFormatter: DateFormatter, and aManagedObjectContext: NSManagedObjectContext, performOnSave onSavedCallback: @escaping (Note) -> Void) {
             dateFormatter = aDateFormatter
             managedObjectContext = aManagedObjectContext
+            onSaved = onSavedCallback
         }
         
         var canSave: Bool {
@@ -37,15 +40,19 @@ extension NoteEditView {
         }
         
         func save() {
+            guard canSave else {
+                return
+            }
             var note = self.note
             if note == nil {
                 let newNote = Note(context: managedObjectContext)
-                newNote.id = UUID()
+                newNote.theId = UUID()
                 note = newNote
             }
             note!.date = Date()
             note!.content = content
-            try? managedObjectContext.save()
+            try! managedObjectContext.save()
+            onSaved(note!)
         }
     }
 }

@@ -19,22 +19,22 @@ struct PersistenceController {
         let controller = PersistenceController(inMemory: true)
 
         let todo1 = Note(context: controller.container.viewContext)
-        todo1.id = UUID()
+        todo1.theId = UUID()
         todo1.content = "some content"
         todo1.date = Date()
         
         let todo2 = Note(context: controller.container.viewContext)
-        todo2.id = UUID()
+        todo2.theId = UUID()
         todo2.content = "asdasd"
         todo1.date = Date()
         
         let todo3 = Note(context: controller.container.viewContext)
-        todo3.id = UUID()
+        todo3.theId = UUID()
         todo3.content = "another note"
         todo1.date = Date()
         
         let fosterHome = FosterHome(context: controller.container.viewContext)
-        fosterHome.id = UUID()
+        fosterHome.theId = UUID()
         fosterHome.name = "Lt da Leona"
         fosterHome.notes = [todo1, todo2, todo3]
 

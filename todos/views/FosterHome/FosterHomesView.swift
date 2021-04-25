@@ -18,6 +18,7 @@ struct FosterHomesView: View {
     ) var homes: FetchedResults<FosterHome>
     
     @StateObject var fosterHomes: ViewModel
+    let dateFormatter: DateFormatter
     
     var body: some View {
         ZStack {
@@ -31,20 +32,20 @@ struct FosterHomesView: View {
                 List {
                     ForEach(homes) { home in
                         NavigationLink(
-                            destination: FosterHomeDetailsView(fosterHome: FosterHomeDetailsView.ViewModel(for: home, with: DateFormatter()))
+                            destination: FosterHomeDetailsView(fosterHome: FosterHomeDetailsView.ViewModel(for: home, with: managedObjectContext, and: dateFormatter))
                                 .environment(\.managedObjectContext, managedObjectContext),
                             label: {
                                 Text(home.wrappedName)
                             })
                     }
                     .onDelete(perform: { indexSet in
-                        
+
                         let fosterHomes = indexSet.map{ homes[$0] }
                         fosterHomes.forEach(self.fosterHomes.deleteFosterHome)
-                        
+
                     })
                 }
-                
+
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(action: fosterHomes.create, label: {
@@ -56,7 +57,7 @@ struct FosterHomesView: View {
         }
         .navigationBarTitle("Lares Temporários")
         .background(
-            NavigationLink(destination: FosterHomeEditView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: fosterHomes.onFinishedEditing)
+            NavigationLink(destination: FosterHomeEditView(fosterHome: fosterHomes.editFosterHome)
             .environment(\.managedObjectContext, managedObjectContext),
                            isActive: $fosterHomes.isEditing) {
                 EmptyView()
@@ -68,7 +69,7 @@ struct FosterHomesView: View {
 struct FosterHomesView_Previews: PreviewProvider {
     static var previews: some View {
         let persistenceController = PersistenceController.preview
-        FosterHomesView(fosterHomes: FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext))
+        FosterHomesView(fosterHomes: FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext, and: DateFormatter()), dateFormatter: DateFormatter())
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }

@@ -25,7 +25,8 @@ class todosTests: XCTestCase {
 
     func testEditingState() throws {
         let persistenceController = PersistenceController.preview
-        let viewModel = FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext)
+        let dateFormatter = DateFormatter()
+        let viewModel = FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext, and: dateFormatter)
         XCTAssert(!viewModel.isEditing)
         viewModel.create()
         XCTAssert(viewModel.isEditing)

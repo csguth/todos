@@ -10,7 +10,7 @@ import CoreData
 
 extension FosterHomeEditView {
     
-    class ViewModel: ObservableObject, Identifiable {
+    class ViewModel: ObservableObject {
         
         var home: FosterHome? = nil
         let managedObjectContext: NSManagedObjectContext
@@ -24,17 +24,6 @@ extension FosterHomeEditView {
         init (with ctx: NSManagedObjectContext) {
             managedObjectContext = ctx
         }
-        
-        init (from fosterHome: FosterHome) {
-            home = fosterHome
-            managedObjectContext = fosterHome.managedObjectContext ?? PersistenceController.shared.container.viewContext
-            name = fosterHome.name ?? ""
-            phone = fosterHome.phone ?? ""
-            maleCount = Int(fosterHome.malesCount)
-            femaleCount = Int(fosterHome.femalesCount)
-            date = fosterHome.date ?? Date.sevenDaysAgo
-        }
-        
 
         var canSave: Bool {
             return (
@@ -54,6 +43,33 @@ extension FosterHomeEditView {
             let days = date.daysBetween(date: Date())
             let plural = days > 1 ? "s" : ""
             return "\(days) dia\(plural)"
+        }
+        
+        func reset(fosterHome: FosterHome?) {
+            home = fosterHome
+            name = fosterHome?.wrappedName ?? ""
+            phone = fosterHome?.phone ?? ""
+            maleCount = Int(fosterHome?.malesCount ?? 0)
+            femaleCount = Int(fosterHome?.femalesCount ?? 0)
+            date = fosterHome?.date ?? Date.sevenDaysAgo
+        }
+        
+        func save() {
+            guard canSave else {
+                return
+            }
+            var home = self.home
+            if home == nil {
+                let newHome = FosterHome(context: managedObjectContext)
+                newHome.theId = UUID()
+                home = newHome
+            }
+            home!.date = date
+            home!.femalesCount = Int32(femaleCount)
+            home!.malesCount = Int32(maleCount)
+            home!.name = name
+            home!.phone = phone
+            try! managedObjectContext.save()
         }
         
     }

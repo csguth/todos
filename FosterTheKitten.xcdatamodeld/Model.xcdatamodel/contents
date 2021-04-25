@@ -3,16 +3,16 @@
     <entity name="FosterHome" representedClassName="FosterHome" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="femalesCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="malesCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="phone" optional="YES" attributeType="String"/>
+        <attribute name="theId" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="notes" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="fosterHome" inverseEntity="Note"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
         <attribute name="content" attributeType="String"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="theId" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="fosterHome" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FosterHome" inverseName="notes" inverseEntity="FosterHome"/>
     </entity>
     <elements>

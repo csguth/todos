@@ -12,18 +12,13 @@ struct FosterHomeSummaryView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
 
     @ObservedObject var fosterHome: ViewModel
-
-    @State var editing = false
     
     var body: some View {
         HStack {
             Text(fosterHome.text)
             Spacer()
-            NavigationLink(destination: FosterHomeEditView(fosterHome: fosterHome.beingEdited, onSave: {
-                editing = false
-            })
-            .environment(\.managedObjectContext, managedObjectContext),
-            isActive: $editing) {
+            NavigationLink(destination: FosterHomeEditView(fosterHome: fosterHome.editFosterHome)
+            .environment(\.managedObjectContext, managedObjectContext)) {
                 Text("Editar informações")
             }
         }.padding()
@@ -35,7 +30,7 @@ struct FosterHomeSummaryView_Previews: PreviewProvider {
         let persistenceController = PersistenceController.preview
         
         let fosterHome = FosterHome(context: persistenceController.container.viewContext)
-        fosterHome.id = UUID()
+        fosterHome.theId = UUID()
         fosterHome.femalesCount = 2
         fosterHome.malesCount = 1
 

@@ -6,29 +6,39 @@
 //
 
 import Foundation
+import CoreData
 
 extension FosterHomeSummaryView {
     class ViewModel: ObservableObject {
         @Published var fosterHome: FosterHome
         
-        @Published var beingEdited: FosterHomeEditView.ViewModel
+        @Published var editFosterHome: FosterHomeEditView.ViewModel
         
-        init(for fosterHome: FosterHome) {
+        init (for fosterHome: FosterHome) {
             _fosterHome = Published(wrappedValue: fosterHome)
-            beingEdited = FosterHomeEditView.ViewModel(from: fosterHome)
+            editFosterHome = FosterHomeEditView.ViewModel(with: fosterHome.managedObjectContext ?? PersistenceController.shared.container.viewContext)
+            editFosterHome.reset(fosterHome: fosterHome)
         }
         
-        private func makeText(count: Int, text: String) -> String {
+        private func makeText(_ text: String, for count: Int) -> String {
             let plural = count > 1 ? "s" : ""
             return count > 0 ? "\(count) \(text)\(plural)": ""
         }
         
+        var malesCount: Int {
+            Int(fosterHome.malesCount)
+        }
+        
+        var femalesCount: Int {
+            Int(fosterHome.femalesCount)
+        }
+        
         private var plus: String {
-            fosterHome.malesCount > 0 && fosterHome.femalesCount > 0 ? " + " : ""
+            malesCount > 0 && femalesCount > 0 ? " + " : ""
         }
         
         var text: String {
-            return makeText(count: Int(fosterHome.malesCount), text: "macho") + plus + makeText(count: Int(fosterHome.femalesCount), text: "fêmea")
+            return makeText("macho", for: malesCount) + plus + makeText("fêmea", for: femalesCount)
         }
         
     }

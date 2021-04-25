@@ -31,6 +31,8 @@ struct NoteEditView: View {
 struct NoteSheetView_Previews: PreviewProvider {
     static var previews: some View {
         let persistance = PersistenceController.preview
-        NoteEditView(note: NoteEditView.ViewModel(with: DateFormatter(), and: persistance.container.viewContext))
+        NoteEditView(note: NoteEditView.ViewModel(with: DateFormatter(), and: persistance.container.viewContext) { _ in
+            
+        })
     }
 }

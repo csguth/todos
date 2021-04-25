@@ -9,11 +9,9 @@ import SwiftUI
 
 struct FosterHomeEditView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var fosterHome: ViewModel
-    
-    let onSave: () -> Void
-        
+
     var body: some View {
         Form {
             Section(header: Text("Perfil")) {
@@ -37,23 +35,11 @@ struct FosterHomeEditView: View {
             }
             Section {
                 Button("Salvar", action: {
-                    if fosterHome.home == nil {
-                        let home = FosterHome(context: managedObjectContext)
-                        home.id = UUID()
-                        self.fosterHome.home = home
-                    }
-                    let home = self.fosterHome.home!
-                    home.date = fosterHome.date
-                    home.femalesCount = Int32(fosterHome.femaleCount)
-                    home.malesCount = Int32(fosterHome.maleCount)
-                    home.name = fosterHome.name
-                    home.phone = fosterHome.phone
-                    
-                    try! managedObjectContext.save()
-                    onSave()
+                    fosterHome.save()
+                    presentationMode.wrappedValue.dismiss()
                 })
                 .disabled(!fosterHome.canSave)
-                Button("Cancelar", action: onSave)
+                Button("Cancelar", action: { presentationMode.wrappedValue.dismiss() })
             }
             
         }
@@ -66,10 +52,6 @@ struct FosterHomeEditView: View {
 struct AddFosterHomeView_Previews: PreviewProvider {
     static var previews: some View {
         let ctx = PersistenceController.shared.container.viewContext
-        let home = FosterHome(context: ctx)
-        home.id = UUID()
-        return FosterHomeEditView(fosterHome: FosterHomeEditView.ViewModel(from: home)) {
-            
-        }
+        return FosterHomeEditView(fosterHome: FosterHomeEditView.ViewModel(with: ctx))
     }
 }

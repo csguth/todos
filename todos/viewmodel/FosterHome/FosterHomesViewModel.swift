@@ -12,19 +12,19 @@ extension FosterHomesView {
     class ViewModel: ObservableObject {
         
         var managedObjectContext: NSManagedObjectContext
-        @Published var fosterHomeBeingEdited: FosterHomeEditView.ViewModel
+        @Published var editFosterHome: FosterHomeEditView.ViewModel
         @Published var isEditing = false
         
-        init(ctx: NSManagedObjectContext) {
+        init(ctx: NSManagedObjectContext, and dateFormatter: DateFormatter) {
             managedObjectContext = ctx
-            fosterHomeBeingEdited = FosterHomeEditView.ViewModel(with: ctx)
+            editFosterHome = FosterHomeEditView.ViewModel(with: ctx)
         }
         
         func create() {
             if isEditing {
                 return
             }
-            fosterHomeBeingEdited = FosterHomeEditView.ViewModel(with: managedObjectContext)
+            editFosterHome = FosterHomeEditView.ViewModel(with: managedObjectContext)
             isEditing = true
         }
         
@@ -37,5 +37,6 @@ extension FosterHomesView {
             managedObjectContext.delete(fosterHome)
             try! managedObjectContext.save()
         }
+        
     }
 }

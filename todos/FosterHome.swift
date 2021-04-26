@@ -21,4 +21,24 @@ extension FosterHome {
         }
     }
     
+    public var malesCount: Int {
+        let set = animals as? Set<Animal> ?? []
+        return set.filter{ $0.wrappedSex == .male }.count
+    }
+    
+    public var femalesCount: Int {
+        let set = animals as? Set<Animal> ?? []
+        return set.filter{ $0.wrappedSex == .female }.count
+    }
+    
+    public var animalsArray: [Animal] {
+        let set = animals as? Set<Animal> ?? []
+        var output = [Animal]()
+        output += set.filter{$0.isAlive && !$0.isReserved && !$0.isAdopted && !output.contains($0)}
+        output += set.filter{$0.isAlive && $0.isReserved && !output.contains($0)}
+        output += set.filter{$0.isAlive && $0.isAdopted && !output.contains($0)}
+        output += set.filter{!$0.isAlive && !output.contains($0)}
+        return output
+    }
+    
 }

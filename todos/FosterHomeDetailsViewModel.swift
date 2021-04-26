@@ -19,6 +19,10 @@ extension FosterHomeDetailsView {
         @Published var isEditingNote = false
         @Published var noteBeingEdited = NoteSheetView.ViewModel()
         
+        var summary: FosterHomeSummaryView.ViewModel {
+            FosterHomeSummaryView.ViewModel(for: fosterHome)
+        }
+        
         var id: UUID {
             fosterHome.id ?? UUID()
         }

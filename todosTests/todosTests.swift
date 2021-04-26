@@ -39,9 +39,6 @@ class todosTests: XCTestCase {
         XCTAssert(!mainModel.canSave)
         XCTAssertEqual(mainModel.name, "")
         XCTAssertEqual(mainModel.phone, "")
-        XCTAssertEqual(mainModel.maleCount, 0)
-        XCTAssertEqual(mainModel.femaleCount, 0)
-        XCTAssertEqual(mainModel.femaleCount, 0)
 
     }
     
@@ -57,20 +54,6 @@ class todosTests: XCTestCase {
         XCTAssertEqual(mainModel.age, "1 dia")
     }
     
-    func testCanSaveOnlyIfTheresANameAndAtLeastOneAnimal() throws {
-        let mainModel = EditFosterHomeView.ViewModel(with: persistenceController.container.viewContext)
-        XCTAssert(!mainModel.canSave)
-        mainModel.femaleCount = 1
-        mainModel.name = "a"
-        XCTAssert(mainModel.canSave)
-        mainModel.name = ""
-        XCTAssert(!mainModel.canSave)
-        mainModel.name = "a"
-        mainModel.femaleCount = 0
-        XCTAssert(!mainModel.canSave)
-
-    }
-
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {

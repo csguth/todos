@@ -39,8 +39,6 @@ extension EditFosterHomeView {
         
         @Published var name: String
         @Published var phone: String
-        @Published var maleCount: Int
-        @Published var femaleCount: Int
         @Published var date: Date
         
         init (with ctx: NSManagedObjectContext) {
@@ -48,8 +46,6 @@ extension EditFosterHomeView {
             managedObjectContext = ctx
             name = ""
             phone = ""
-            maleCount = 0
-            femaleCount = 0
             date = Date.sevenDaysAgo
         }
         
@@ -58,21 +54,16 @@ extension EditFosterHomeView {
             managedObjectContext = fosterHome.managedObjectContext ?? PersistenceController.shared.container.viewContext
             name = fosterHome.name ?? ""
             phone = fosterHome.phone ?? ""
-            maleCount = Int(fosterHome.malesCount)
-            femaleCount = Int(fosterHome.femalesCount)
             date = fosterHome.date ?? Date.sevenDaysAgo
         }
-        
+
         var canSave: Bool {
             return (
                 !name.isEmpty &&
                 date.daysBetween(date: Date()) > 0) &&
-                (femaleCount + maleCount >= 1) &&
                 (
                     (name != home?.name) ||
                     (phone != home?.phone) ||
-                    (maleCount != Int(home?.malesCount ?? 0)) ||
-                    (femaleCount != Int(home?.femalesCount ?? 0)) ||
                     (date != home?.date)
                 )
         }
@@ -87,8 +78,6 @@ extension EditFosterHomeView {
             home = fosterHome
             name = fosterHome?.name ?? ""
             phone = fosterHome?.phone ?? ""
-            maleCount = Int(fosterHome?.malesCount ?? 0)
-            femaleCount = Int(fosterHome?.femalesCount ?? 0)
             date = fosterHome?.date ?? Date.sevenDaysAgo
         }
         
@@ -110,13 +99,6 @@ struct EditFosterHomeView: View {
                 TextField("Telefone", text: $fosterHome.phone)
             }
             Section(header: Text("Gatos")) {
-
-                Stepper(value: $fosterHome.maleCount, in: 0...10) {
-                    Text("\(fosterHome.maleCount) machos")
-                }
-                Stepper(value: $fosterHome.femaleCount, in: 0...10) {
-                    Text("\(fosterHome.femaleCount) fêmeas")
-                }
                 DatePicker(
                     "Nascimento (\(fosterHome.age))",
                     selection: $fosterHome.date,
@@ -133,8 +115,6 @@ struct EditFosterHomeView: View {
                     }
                     let home = self.fosterHome.home!
                     home.date = fosterHome.date
-                    home.femalesCount = Int32(fosterHome.femaleCount)
-                    home.malesCount = Int32(fosterHome.maleCount)
                     home.name = fosterHome.name
                     home.phone = fosterHome.phone
                     

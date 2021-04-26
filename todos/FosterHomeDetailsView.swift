@@ -10,7 +10,7 @@ import SwiftUI
 struct FosterHomeDetailsView: View {
 
     @Environment(\.managedObjectContext) var managedObjectContext
-    @StateObject var fosterHome: ViewModel
+    @ObservedObject var fosterHome: ViewModel
     @State var removed = Set<Note>()
 
     private func createNote() {
@@ -33,9 +33,9 @@ struct FosterHomeDetailsView: View {
     
     var body: some View {
         VStack {
-            FosterHomeSummaryView(fosterHome: FosterHomeSummaryView.ViewModel(for: fosterHome.fosterHome ))
-            Spacer()
+            FosterHomeSummaryView(fosterHome: fosterHome.summary)
             if fosterHome.notes.isEmpty {
+                Spacer()
                 VStack {
                     Text("Sem notas")
                     Button("Criar uma!", action: createNote)
@@ -68,6 +68,8 @@ struct FosterHomeDetailsView: View {
                 }
             }
             Spacer()
+
+
         }
         .onAppear {
             removed.removeAll()
@@ -108,8 +110,10 @@ struct ContentView_Previews: PreviewProvider {
         fosterHome.addToNotes(note2)
         fosterHome.addToNotes(note3)
         
-        fosterHome.femalesCount = 2
-        fosterHome.malesCount = 4
+        let leona = Animal(context: persistenceController.container.viewContext)
+        leona.name = "Leona"
+        leona.fosterHome = fosterHome
+        
         
         let model = FosterHomeDetailsView.ViewModel(for: fosterHome)
         

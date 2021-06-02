@@ -65,6 +65,7 @@
 		6D60EB2B26232D00007726B7 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
 		6D60EB3026233164007726B7 /* FosterHomesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesView.swift; sourceTree = "<group>"; };
 		6D60EB38262331DA007726B7 /* FosterHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHome.swift; sourceTree = "<group>"; };
+		6D6236F326375D1300EDE4BD /* todos.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = todos.entitlements; sourceTree = "<group>"; };
 		6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeSummaryView.swift; sourceTree = "<group>"; };
 		6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeDetailsViewModel.swift; sourceTree = "<group>"; };
 		6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFosterHomeView.swift; sourceTree = "<group>"; };
@@ -120,6 +121,7 @@
 		6D166B0C2622E23F00B1DF67 /* todos */ = {
 			isa = PBXGroup;
 			children = (
+				6D6236F326375D1300EDE4BD /* todos.entitlements */,
 				6D2C3A992635EDE800D19709 /* AnimalBubbleView.swift */,
 				6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */,
 				6D60EB3026233164007726B7 /* FosterHomesView.swift */,
@@ -465,6 +467,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = todos/todos.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"todos/Preview Content\"";
 				DEVELOPMENT_TEAM = 8SB69VS9YK;
@@ -475,9 +478,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = "0.3-dev";
 				PRODUCT_BUNDLE_IDENTIFIER = com.csguth.ftk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -488,6 +492,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = todos/todos.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"todos/Preview Content\"";
 				DEVELOPMENT_TEAM = 8SB69VS9YK;
@@ -498,9 +503,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = "0.3-dev";
 				PRODUCT_BUNDLE_IDENTIFIER = com.csguth.ftk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

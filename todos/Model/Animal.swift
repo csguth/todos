@@ -14,6 +14,19 @@ extension Animal {
         case female = "F"
     }
     
+    
+    enum Color: String, CaseIterable {
+        case tabby_orange = "tabby-orange"
+        case tabby_gray = "tabby-gray"
+        case tuxedo = "tuxedo"
+        
+        func next() -> Color {
+            if self == .tabby_orange { return .tabby_gray }
+            if self == .tabby_gray { return .tuxedo }
+            return .tabby_orange
+        }
+    }
+    
     var wrappedName: String {
         name ?? ""
     }
@@ -56,8 +69,13 @@ extension Animal {
         death == nil
     }
     
-    var wrappedColor: String {
-        color ?? ""
+    var wrappedColor: Color {
+        set {
+            color = newValue.rawValue
+        }
+        get {
+            Color(rawValue: color ?? "tabby-gray") ?? .tabby_gray
+        }
     }
     
 }

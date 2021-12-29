@@ -16,7 +16,7 @@ struct AnimalBubbleView: View {
                 destination: EditAnimalView().environmentObject(animal)
             ) {
                 ZStack {
-                    Image(animal.color).resizable()
+                    Image(animal.color.rawValue).resizable()
                         .frame(width: 64, height: 64)
                         .clipShape(Circle())
                     animal.adoption.map { _ in

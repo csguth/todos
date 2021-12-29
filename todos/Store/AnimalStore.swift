@@ -11,7 +11,7 @@ import CoreData
 
 class AnimalStore: ObservableObject, Identifiable {
     @Published var animal: Animal
-    
+        
     init (animal: Animal) {
         _animal = Published(wrappedValue: animal)
     }
@@ -39,14 +39,25 @@ class AnimalStore: ObservableObject, Identifiable {
     }
     
     public func changeColor() {
-        let colors = ["tabby-gray", "tabby-orange", "tuxedo"]
+        let colors: [Animal.Color] = [.tabby_orange, .tabby_gray, .tuxedo]
         guard let index = colors.firstIndex(of: color) else {
             return
         }
-        animal.color = colors[(index+1)%colors.count]
+        animal.wrappedColor = colors[(index+1)%colors.count]
         guard let ctx = animal.managedObjectContext else {
             return
         }
+        try! ctx.save()
+        animal = self.animal
+    }
+    
+    public func save(name: String, sex: Animal.Sex, color: Animal.Color) {
+        guard let ctx = animal.managedObjectContext else {
+            return
+        }
+        animal.name = name
+        animal.wrappedSex = sex
+        animal.wrappedColor = color
         try! ctx.save()
         animal = self.animal
     }
@@ -59,7 +70,7 @@ class AnimalStore: ObservableObject, Identifiable {
         try! ctx.save()
     }
     
-    var color: String {
+    var color: Animal.Color {
         animal.wrappedColor
     }
     
@@ -68,7 +79,15 @@ class AnimalStore: ObservableObject, Identifiable {
     }
     
     var displayName: String {
-        return animal.wrappedName + (animal.wrappedSex == .male ? "♂" : "♀")
+        animal.wrappedName + (animal.wrappedSex == .male ? "♂" : "♀")
+    }
+    
+    var wrappedName: String {
+        animal.wrappedName
+    }
+    
+    var sex: Animal.Sex {
+        animal.wrappedSex
     }
     
 }

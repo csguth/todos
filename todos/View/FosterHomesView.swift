@@ -31,8 +31,8 @@ struct FosterHomesView: View {
                 List {
                     ForEach(homes) { home in
                         NavigationLink(
-                            destination: FosterHomeDetailsView(fosterHome: FosterHomeDetailsView.ViewModel(for: home))
-                                .environment(\.managedObjectContext, managedObjectContext),
+                            destination: FosterHomeDetailsView()
+                                .environmentObject(FosterHomeStore(for: home)),
                             label: {
                                 Text(home.wrappedName)
                             })

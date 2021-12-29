@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct AnimalBubbleView: View {
-    @StateObject var animal: AnimalStore
+    @EnvironmentObject var animal: AnimalStore
 
     var body: some View {
         VStack(spacing: 0) {
-            Button(action: {animal.changeColor()}) {
+            NavigationLink(
+                destination: EditAnimalView().environmentObject(animal)
+            ) {
                 ZStack {
                     Image(animal.color).resizable()
                         .frame(width: 64, height: 64)

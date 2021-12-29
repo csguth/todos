@@ -7,34 +7,35 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
-class AnimalStore: ObservableObject {
-    @Published var animal: Animal?
+class AnimalStore: ObservableObject, Identifiable {
+    @Published var animal: Animal
     
-    init(for animal: Animal) {
+    init (animal: Animal) {
         _animal = Published(wrappedValue: animal)
+    }
+
+    private func adopt(who: String, ctx: NSManagedObjectContext) {
+        let adoption = Adoption(context: ctx)
+        adoption.date = Date()
+        adoption.name = who
+        animal.addToAdoptions(adoption)
+        try! ctx.save()
+        animal = self.animal
     }
     
     public func rehome() {
-        guard let animal = self.animal else {
+        guard let ctx = animal.managedObjectContext else {
             return
         }
-        
         guard let firstAdoption = animal.adoptionsArray.first else {
-            
-            let adoption = Adoption(context: animal.managedObjectContext!)
-            adoption.date = Date()
-            adoption.name = "Foo"
-            animal.addToAdoptions(adoption)
-            try! animal.managedObjectContext?.save()
-            self.animal = animal
+            adopt(who: "Foo", ctx: ctx)
             return
         }
-        
         animal.removeFromAdoptions(firstAdoption)
-        try! animal.managedObjectContext?.save()
-        self.animal = animal
-        
+        try! ctx.save()
+        animal = self.animal
     }
     
     public func changeColor() {
@@ -42,30 +43,31 @@ class AnimalStore: ObservableObject {
         guard let index = colors.firstIndex(of: color) else {
             return
         }
-        animal?.color = colors[(index+1)%colors.count]
-        try! animal?.managedObjectContext?.save()
+        animal.color = colors[(index+1)%colors.count]
+        guard let ctx = animal.managedObjectContext else {
+            return
+        }
+        try! ctx.save()
         animal = self.animal
     }
     
     public func remove() {
-        guard let animal = self.animal else {
+        guard let ctx = animal.managedObjectContext else {
             return
         }
-        animal.managedObjectContext?.delete(animal)
+        ctx.delete(animal)
+        try! ctx.save()
     }
     
     var color: String {
-        animal?.color ?? "tabby-gray"
+        animal.wrappedColor
     }
     
     var adoption: Adoption? {
-        animal?.adoptionsArray.first
+        animal.adoptionsArray.first
     }
     
     var displayName: String {
-        guard let animal = self.animal else {
-            return "Nil ☿"
-        }
         return animal.wrappedName + (animal.wrappedSex == .male ? "♂" : "♀")
     }
     

@@ -9,61 +9,42 @@ import SwiftUI
 
 struct FosterHomeDetailsView: View {
 
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @ObservedObject var fosterHome: ViewModel
-    @State var removed = Set<Note>()
+    @EnvironmentObject var store: FosterHomeStore
+    @State var editing: Bool = false
+    
+    private func create() {
+        store.create()
+        editing = true
+    }
+    
+    private func edit(_ note: Note) {
+        store.edit(note: note)
+        editing = true
+    }
 
-    private func createNote() {
-        let note = Note(context: managedObjectContext)
-        note.id = UUID()
-        fosterHome.edit(note: note)
-    }
-    
-    private func deleteNote(note: Note) {
-        removed.insert(note)
-        managedObjectContext.delete(note)
-        try! managedObjectContext.save()
-    }
-    
-    private func addNote(note: Note) {
-        fosterHome.fosterHome.addToNotes(note)
-        try! managedObjectContext.save()
-        fosterHome.isEditingNote = false
-    }
-    
     var body: some View {
         VStack {
-            FosterHomeSummaryView(fosterHome: fosterHome.summary)
-                .environment(\.managedObjectContext, managedObjectContext)
-            if fosterHome.notes.isEmpty {
+            FosterHomeSummaryView()
+                .environmentObject(store)
+            if store.notesArray.isEmpty {
                 Spacer()
                 VStack {
                     Text("Sem notas")
-                    Button("Criar uma!", action: createNote)
+                    Button("Criar uma!", action: create)
                 }
             }
             else
             {
                 List {
-                    ForEach(fosterHome.notes) { note in
-                        if !removed.contains(note) {
-                            Button(action: {
-                                fosterHome.edit(note: note)
-                            }, label: {
-                                NoteView(note: note)
-                            })
-                            
-                        }
+                    ForEach(store.notesArray) { note in
+                        Button(action: { edit(note) }, label: {
+                            NoteView(note: note)
+                        })
                     }
-                    .onDelete(perform: { indexSet in
-                        
-                        let notes = indexSet.map{ fosterHome.notes[$0] }
-                        notes.forEach(deleteNote)
-                        
-                    })
+                    .onDelete(perform: { store.deleteNotes(indexSet: $0) })
                 }
                 .toolbar {
-                    Button(action: createNote, label: {
+                    Button(action: create, label: {
                         Image(systemName: "note.text.badge.plus")
                     })
                 }
@@ -72,14 +53,11 @@ struct FosterHomeDetailsView: View {
 
 
         }
-        .onAppear {
-            removed.removeAll()
+        .sheet(isPresented: $editing) {
+            NoteSheetView()
+                .environmentObject(store.noteStore)
         }
-        .sheet(isPresented: $fosterHome.isEditingNote) {
-            NoteSheetView(note: fosterHome.noteBeingEdited, onSaved: addNote)
-            .environment(\.managedObjectContext, managedObjectContext)
-        }
-        .navigationBarTitle(fosterHome.name)
+        .navigationBarTitle(store.name)
         
     }
     
@@ -114,11 +92,8 @@ struct ContentView_Previews: PreviewProvider {
         let leona = Animal(context: persistenceController.container.viewContext)
         leona.name = "Leona"
         leona.fosterHome = fosterHome
-        
-        
-        let model = FosterHomeDetailsView.ViewModel(for: fosterHome)
-        
-        return FosterHomeDetailsView(fosterHome: model)
-        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+
+        return FosterHomeDetailsView()
+            .environmentObject(FosterHomeStore(for: fosterHome))
     }
 }

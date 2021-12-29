@@ -25,9 +25,10 @@
 		6DC93CCC277C9A8F0032243C /* AnimalBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CCB277C9A8F0032243C /* AnimalBubbleView.swift */; };
 		6DC93CCE277C9AA80032243C /* AnimalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CCD277C9AA80032243C /* AnimalButtonView.swift */; };
 		6DC93CD1277C9B8E0032243C /* FosterHomesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD0277C9B8E0032243C /* FosterHomesViewModel.swift */; };
-		6DC93CD3277C9BB10032243C /* FosterHomeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD2277C9BB10032243C /* FosterHomeSummaryViewModel.swift */; };
 		6DC93CD5277C9BC70032243C /* EditFosterHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD4277C9BC70032243C /* EditFosterHomeViewModel.swift */; };
-		6DC93CD7277C9BE00032243C /* NoteSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD6277C9BE00032243C /* NoteSheetViewModel.swift */; };
+		6DC93CDA277CA11C0032243C /* FosterHomeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD9277CA11C0032243C /* FosterHomeStore.swift */; };
+		6DC93CDE277CA6490032243C /* NoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CDD277CA6490032243C /* NoteStore.swift */; };
+		6DC93CE0277CBCF90032243C /* EditAnimalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CDF277CBCF90032243C /* EditAnimalView.swift */; };
 		6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDD23492623001F0070312E /* PersistanceController.swift */; };
 		6DDD2354262304060070312E /* FosterTheKitten.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6D166B532622EEC700B1DF67 /* FosterTheKitten.xcdatamodeld */; };
 		6DDE1580277C98A8000D38CA /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDE157F277C98A8000D38CA /* Date.swift */; };
@@ -77,9 +78,10 @@
 		6DC93CCB277C9A8F0032243C /* AnimalBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalBubbleView.swift; sourceTree = "<group>"; };
 		6DC93CCD277C9AA80032243C /* AnimalButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalButtonView.swift; sourceTree = "<group>"; };
 		6DC93CD0277C9B8E0032243C /* FosterHomesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesViewModel.swift; sourceTree = "<group>"; };
-		6DC93CD2277C9BB10032243C /* FosterHomeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeSummaryViewModel.swift; sourceTree = "<group>"; };
 		6DC93CD4277C9BC70032243C /* EditFosterHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFosterHomeViewModel.swift; sourceTree = "<group>"; };
-		6DC93CD6277C9BE00032243C /* NoteSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSheetViewModel.swift; sourceTree = "<group>"; };
+		6DC93CD9277CA11C0032243C /* FosterHomeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeStore.swift; sourceTree = "<group>"; };
+		6DC93CDD277CA6490032243C /* NoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStore.swift; sourceTree = "<group>"; };
+		6DC93CDF277CBCF90032243C /* EditAnimalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnimalView.swift; sourceTree = "<group>"; };
 		6DDD23492623001F0070312E /* PersistanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceController.swift; sourceTree = "<group>"; };
 		6DDE157F277C98A8000D38CA /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		6DFC34E5277B4C1600405BE5 /* AnimalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalStore.swift; sourceTree = "<group>"; };
@@ -178,9 +180,7 @@
 			children = (
 				6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */,
 				6DC93CD0277C9B8E0032243C /* FosterHomesViewModel.swift */,
-				6DC93CD2277C9BB10032243C /* FosterHomeSummaryViewModel.swift */,
 				6DC93CD4277C9BC70032243C /* EditFosterHomeViewModel.swift */,
-				6DC93CD6277C9BE00032243C /* NoteSheetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -209,6 +209,7 @@
 				6D60EB3026233164007726B7 /* FosterHomesView.swift */,
 				6D166B0F2622E23F00B1DF67 /* FosterHomeDetailsView.swift */,
 				6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */,
+				6DC93CDF277CBCF90032243C /* EditAnimalView.swift */,
 				6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */,
 				6D60EB2B26232D00007726B7 /* NoteView.swift */,
 				6D60EB2626232C1E007726B7 /* NoteSheetView.swift */,
@@ -223,6 +224,8 @@
 			children = (
 				6DFC34E5277B4C1600405BE5 /* AnimalStore.swift */,
 				6DDD23492623001F0070312E /* PersistanceController.swift */,
+				6DC93CD9277CA11C0032243C /* FosterHomeStore.swift */,
+				6DC93CDD277CA6490032243C /* NoteStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -359,23 +362,24 @@
 				6DA0CD0E2623741700448FE7 /* EditFosterHomeView.swift in Sources */,
 				6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */,
 				6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */,
+				6DC93CDE277CA6490032243C /* NoteStore.swift in Sources */,
 				6DDE1580277C98A8000D38CA /* Date.swift in Sources */,
 				6D166B102622E23F00B1DF67 /* FosterHomeDetailsView.swift in Sources */,
 				6DC93CCE277C9AA80032243C /* AnimalButtonView.swift in Sources */,
 				6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */,
 				6DC93CD1277C9B8E0032243C /* FosterHomesViewModel.swift in Sources */,
 				6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */,
-				6DC93CD7277C9BE00032243C /* NoteSheetViewModel.swift in Sources */,
 				6D9604B7262775710098728C /* FosterHomeDetailsViewModel.swift in Sources */,
 				6D166B0E2622E23F00B1DF67 /* todosApp.swift in Sources */,
 				6D60EB1F262309CF007726B7 /* Note.swift in Sources */,
 				6DC93CCC277C9A8F0032243C /* AnimalBubbleView.swift in Sources */,
 				6D91935726276D7C0024522C /* FosterHomeSummaryView.swift in Sources */,
+				6DC93CDA277CA11C0032243C /* FosterHomeStore.swift in Sources */,
 				6DC93CD5277C9BC70032243C /* EditFosterHomeViewModel.swift in Sources */,
+				6DC93CE0277CBCF90032243C /* EditAnimalView.swift in Sources */,
 				6D60EB2726232C1E007726B7 /* NoteSheetView.swift in Sources */,
 				6DFC34E6277B4C1600405BE5 /* AnimalStore.swift in Sources */,
 				6DDD2354262304060070312E /* FosterTheKitten.xcdatamodeld in Sources */,
-				6DC93CD3277C9BB10032243C /* FosterHomeSummaryViewModel.swift in Sources */,
 				6D2C3A952635E91E00D19709 /* Animal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

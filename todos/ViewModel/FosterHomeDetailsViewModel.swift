@@ -10,35 +10,24 @@ import SwiftUI
 extension FosterHomeDetailsView {
     
     class ViewModel: ObservableObject, Identifiable {
-        @Published var fosterHome: FosterHome
+        @Published var fosterHome: FosterHome?
         
         init (for fosterHome: FosterHome) {
             _fosterHome = Published(wrappedValue: fosterHome)
         }
-
-        @Published var isEditingNote = false
-        @Published var noteBeingEdited = NoteSheetView.ViewModel()
-        
-        var summary: FosterHomeSummaryView.ViewModel {
-            FosterHomeSummaryView.ViewModel(for: fosterHome)
-        }
         
         var id: UUID {
-            fosterHome.id ?? UUID()
+            fosterHome?.id ?? UUID()
         }
         
         var name: String {
-            fosterHome.name ?? ""
+            fosterHome?.wrappedName ?? ""
         }
         
-        var notes: [Note] {
-            fosterHome.notesArray
+        var notesArray: [Note] {
+            fosterHome?.notesArray ?? [Note]()
         }
-        
-        func edit(note: Note) {
-            self.noteBeingEdited.setNote(note: note)
-            isEditingNote = true
-        }
+
     }
     
 

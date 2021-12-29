@@ -8,41 +8,44 @@
 import SwiftUI
 
 struct NoteSheetView: View {
-    @StateObject var note: ViewModel
+    @Environment(\.presentationMode) var presentationMode
+
+    @EnvironmentObject var note: NoteStore
+    @State var content = String()
     
-    @Environment(\.managedObjectContext) var managedObjectContext
-        
-    let onSaved: (Note) -> Void
+    func toText(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yy"
+        return dateFormatter.string(from: date)
+    }
     
+    func save() {
+        note.save(content)
+        presentationMode.wrappedValue.dismiss()
+    }
+    
+    var canSave: Bool {
+        !content.isEmpty && content != note.currentNote?.wrappedContent
+    }
+
     var body: some View {
         VStack {
-            Text(note.dateText)
-            TextEditor(text: $note.content)
+            Text(toText(note.currentNoteDate))
+            TextEditor(text: $content)
                 .padding()
             HStack {
-                Button("Salvar") {
-                    if note.note == nil {
-                        let note = Note(context: managedObjectContext)
-                        note.id = UUID()
-                        self.note.note = note
-                    }
-                    let note = self.note.note!
-                    note.date = self.note.date
-                    note.content = self.note.content
-                    try? managedObjectContext.save()
-                    onSaved(note)
-                }
+                Button("Salvar", action: save)
                 .padding()
-                .disabled(!note.canSave)
+                .disabled(!canSave)
             }
         }
+        .onAppear { content = note.currentNoteContent }
+        
     }
 }
 
 struct NoteSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        NoteSheetView(note: NoteSheetView.ViewModel()) {_ in 
-            
-        }
+        Spacer()
     }
 }

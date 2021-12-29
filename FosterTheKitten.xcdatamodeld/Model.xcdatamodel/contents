@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Adoption" representedClassName="Adoption" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="animal" maxCount="1" deletionRule="Nullify" destinationEntity="Animal" inverseName="adoption" inverseEntity="Animal"/>
+        <relationship name="animal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Animal" inverseName="adoptions" inverseEntity="Animal"/>
     </entity>
     <entity name="Animal" representedClassName="Animal" syncable="YES" codeGenerationType="class">
         <attribute name="color" optional="YES" attributeType="String"/>
         <attribute name="death" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="sex" optional="YES" attributeType="String"/>
-        <relationship name="adoption" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Adoption" inverseName="animal" inverseEntity="Adoption"/>
+        <relationship name="adoptions" optional="YES" toMany="YES" maxCount="2" deletionRule="Cascade" destinationEntity="Adoption" inverseName="animal" inverseEntity="Adoption"/>
         <relationship name="fosterHome" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FosterHome" inverseName="animals" inverseEntity="FosterHome"/>
     </entity>
     <entity name="FosterHome" representedClassName="FosterHome" syncable="YES" codeGenerationType="class">
@@ -28,9 +28,9 @@
         <relationship name="fosterHome" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FosterHome" inverseName="notes" inverseEntity="FosterHome"/>
     </entity>
     <elements>
-        <element name="Animal" positionX="45" positionY="81" width="128" height="119"/>
-        <element name="FosterHome" positionX="-63" positionY="9" width="128" height="119"/>
-        <element name="Note" positionX="143.98046875" positionY="84.4296875" width="128" height="89"/>
-        <element name="Adoption" positionX="36" positionY="81" width="128" height="74"/>
+        <element name="Adoption" positionX="93.7265625" positionY="141.6796875" width="180.7890625" height="73"/>
+        <element name="Animal" positionX="459.62109375" positionY="33.5703125" width="130.90625" height="133"/>
+        <element name="FosterHome" positionX="723.92578125" positionY="284.5546875" width="128" height="119"/>
+        <element name="Note" positionX="957.91015625" positionY="8.6484375" width="128" height="89"/>
     </elements>
 </model>

@@ -34,6 +34,7 @@ struct FosterHomeDetailsView: View {
     var body: some View {
         VStack {
             FosterHomeSummaryView(fosterHome: fosterHome.summary)
+                .environment(\.managedObjectContext, managedObjectContext)
             if fosterHome.notes.isEmpty {
                 Spacer()
                 VStack {

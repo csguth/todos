@@ -31,14 +31,14 @@ extension FosterHome {
         return set.filter{ $0.wrappedSex == .female }.count
     }
     
+    private var animalsSet: Set<Animal> {
+        animals as? Set<Animal> ?? []
+    }
+    
     public var animalsArray: [Animal] {
-        let set = animals as? Set<Animal> ?? []
-        var output = [Animal]()
-        output += set.filter{$0.isAlive && !$0.isReserved && !$0.isAdopted && !output.contains($0)}
-        output += set.filter{$0.isAlive && $0.isReserved && !output.contains($0)}
-        output += set.filter{$0.isAlive && $0.isAdopted && !output.contains($0)}
-        output += set.filter{!$0.isAlive && !output.contains($0)}
-        return output
+        animalsSet.sorted(by: { lhs, rhs in
+            lhs.id < rhs.id
+        })
     }
     
 }

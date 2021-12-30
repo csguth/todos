@@ -10,84 +10,83 @@ import SwiftUI
 import CoreData
 
 class AnimalStore: ObservableObject, Identifiable {
-    @Published var animal: Animal
-        
-    init (animal: Animal) {
-        _animal = Published(wrappedValue: animal)
+    
+    let ctx: PersistenceController
+    
+    init (with ctx: PersistenceController) {
+        self.ctx = ctx
     }
+    
+    @Published var animal: Animal?
 
-    private func adopt(who: String, ctx: NSManagedObjectContext) {
-        let adoption = Adoption(context: ctx)
+    private func adopt(who: String) -> Bool {
+        guard let animal = self.animal else { return false }
+        let adoption = Adoption(context: ctx.container.viewContext)
         adoption.date = Date()
         adoption.name = who
         animal.addToAdoptions(adoption)
-        try! ctx.save()
-        animal = self.animal
+        guard ctx.save() else { return false }
+        self.animal = animal
+        return true
     }
     
-    public func rehome() {
-        guard let ctx = animal.managedObjectContext else {
-            return
-        }
-        guard let firstAdoption = animal.adoptionsArray.first else {
-            adopt(who: "Foo", ctx: ctx)
-            return
-        }
+    public func rehome() -> Bool {
+        guard let animal = self.animal else { return false }
+        guard let firstAdoption = animal.adoptionsArray.first else { return adopt(who: "Foo") }
         animal.removeFromAdoptions(firstAdoption)
-        try! ctx.save()
-        animal = self.animal
+        guard ctx.save() else { return false }
+        self.animal = animal
+        return true
     }
     
-    public func changeColor() {
+    public func changeColor() -> Bool {
         let colors: [Animal.Color] = [.tabby_orange, .tabby_gray, .tuxedo]
-        guard let index = colors.firstIndex(of: color) else {
-            return
-        }
+        guard let index = colors.firstIndex(of: color) else { return false }
+        guard let animal = self.animal else { return false }
         animal.wrappedColor = colors[(index+1)%colors.count]
-        guard let ctx = animal.managedObjectContext else {
-            return
-        }
-        try! ctx.save()
-        animal = self.animal
+        guard ctx.save() else { return false }
+        self.animal = animal
+        return true    }
+    
+    func canSave(name: String, sex: Animal.Sex, color: Animal.Color) -> Bool {
+        return self.name != name || self.sex != sex || self.color != color
     }
     
-    public func save(name: String, sex: Animal.Sex, color: Animal.Color) {
-        guard let ctx = animal.managedObjectContext else {
-            return
-        }
+    public func save(name: String, sex: Animal.Sex, color: Animal.Color) -> Bool {
+        guard canSave(name: name, sex: sex, color: color) else { return false }
+        guard let animal = self.animal else { return false }
         animal.name = name
         animal.wrappedSex = sex
         animal.wrappedColor = color
-        try! ctx.save()
-        animal = self.animal
-    }
+        guard ctx.save() else { return false }
+        self.animal = animal
+        return true    }
     
-    public func remove() {
-        guard let ctx = animal.managedObjectContext else {
-            return
-        }
-        ctx.delete(animal)
-        try! ctx.save()
+    public func remove() -> Bool {
+        animal.map(ctx.container.viewContext.delete)
+        guard ctx.save() else { return false }
+        self.animal = animal
+        return true
     }
     
     var color: Animal.Color {
-        animal.wrappedColor
+        animal?.wrappedColor ?? Animal.Color.tabby_gray
     }
     
     var adoption: Adoption? {
-        animal.adoptionsArray.first
+        animal?.adoptionsArray.first
     }
     
     var displayName: String {
-        animal.wrappedName + (animal.wrappedSex == .male ? "♂" : "♀")
+        (animal?.wrappedName ?? "Foo") + ((animal?.wrappedSex == .male ? "♂" : "♀") ?? "⚥")
     }
     
-    var wrappedName: String {
-        animal.wrappedName
+    var name: String {
+        animal?.wrappedName ?? ""
     }
     
     var sex: Animal.Sex {
-        animal.wrappedSex
+        animal?.wrappedSex ?? .male
     }
     
 }

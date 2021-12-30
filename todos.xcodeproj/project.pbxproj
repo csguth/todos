@@ -19,13 +19,12 @@
 		6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB2B26232D00007726B7 /* NoteView.swift */; };
 		6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB3026233164007726B7 /* FosterHomesView.swift */; };
 		6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D60EB38262331DA007726B7 /* FosterHome.swift */; };
+		6D860276277CD20500EB234F /* ApplicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D860275277CD20500EB234F /* ApplicationStore.swift */; };
 		6D91935726276D7C0024522C /* FosterHomeSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */; };
 		6D9604B7262775710098728C /* FosterHomeDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */; };
 		6DA0CD0E2623741700448FE7 /* EditFosterHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */; };
 		6DC93CCC277C9A8F0032243C /* AnimalBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CCB277C9A8F0032243C /* AnimalBubbleView.swift */; };
 		6DC93CCE277C9AA80032243C /* AnimalButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CCD277C9AA80032243C /* AnimalButtonView.swift */; };
-		6DC93CD1277C9B8E0032243C /* FosterHomesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD0277C9B8E0032243C /* FosterHomesViewModel.swift */; };
-		6DC93CD5277C9BC70032243C /* EditFosterHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD4277C9BC70032243C /* EditFosterHomeViewModel.swift */; };
 		6DC93CDA277CA11C0032243C /* FosterHomeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CD9277CA11C0032243C /* FosterHomeStore.swift */; };
 		6DC93CDE277CA6490032243C /* NoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CDD277CA6490032243C /* NoteStore.swift */; };
 		6DC93CE0277CBCF90032243C /* EditAnimalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC93CDF277CBCF90032243C /* EditAnimalView.swift */; };
@@ -72,13 +71,12 @@
 		6D60EB2B26232D00007726B7 /* NoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
 		6D60EB3026233164007726B7 /* FosterHomesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesView.swift; sourceTree = "<group>"; };
 		6D60EB38262331DA007726B7 /* FosterHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHome.swift; sourceTree = "<group>"; };
+		6D860275277CD20500EB234F /* ApplicationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationStore.swift; sourceTree = "<group>"; };
 		6D91935626276D7C0024522C /* FosterHomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeSummaryView.swift; sourceTree = "<group>"; };
 		6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeDetailsViewModel.swift; sourceTree = "<group>"; };
 		6DA0CD0D2623741700448FE7 /* EditFosterHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFosterHomeView.swift; sourceTree = "<group>"; };
 		6DC93CCB277C9A8F0032243C /* AnimalBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalBubbleView.swift; sourceTree = "<group>"; };
 		6DC93CCD277C9AA80032243C /* AnimalButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalButtonView.swift; sourceTree = "<group>"; };
-		6DC93CD0277C9B8E0032243C /* FosterHomesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomesViewModel.swift; sourceTree = "<group>"; };
-		6DC93CD4277C9BC70032243C /* EditFosterHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFosterHomeViewModel.swift; sourceTree = "<group>"; };
 		6DC93CD9277CA11C0032243C /* FosterHomeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FosterHomeStore.swift; sourceTree = "<group>"; };
 		6DC93CDD277CA6490032243C /* NoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStore.swift; sourceTree = "<group>"; };
 		6DC93CDF277CBCF90032243C /* EditAnimalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAnimalView.swift; sourceTree = "<group>"; };
@@ -179,8 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				6D9604B6262775710098728C /* FosterHomeDetailsViewModel.swift */,
-				6DC93CD0277C9B8E0032243C /* FosterHomesViewModel.swift */,
-				6DC93CD4277C9BC70032243C /* EditFosterHomeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -226,6 +222,7 @@
 				6DDD23492623001F0070312E /* PersistanceController.swift */,
 				6DC93CD9277CA11C0032243C /* FosterHomeStore.swift */,
 				6DC93CDD277CA6490032243C /* NoteStore.swift */,
+				6D860275277CD20500EB234F /* ApplicationStore.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -359,6 +356,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D860276277CD20500EB234F /* ApplicationStore.swift in Sources */,
 				6DA0CD0E2623741700448FE7 /* EditFosterHomeView.swift in Sources */,
 				6D60EB39262331DA007726B7 /* FosterHome.swift in Sources */,
 				6DDD234A2623001F0070312E /* PersistanceController.swift in Sources */,
@@ -367,7 +365,6 @@
 				6D166B102622E23F00B1DF67 /* FosterHomeDetailsView.swift in Sources */,
 				6DC93CCE277C9AA80032243C /* AnimalButtonView.swift in Sources */,
 				6D60EB3126233164007726B7 /* FosterHomesView.swift in Sources */,
-				6DC93CD1277C9B8E0032243C /* FosterHomesViewModel.swift in Sources */,
 				6D60EB2C26232D00007726B7 /* NoteView.swift in Sources */,
 				6D9604B7262775710098728C /* FosterHomeDetailsViewModel.swift in Sources */,
 				6D166B0E2622E23F00B1DF67 /* todosApp.swift in Sources */,
@@ -375,7 +372,6 @@
 				6DC93CCC277C9A8F0032243C /* AnimalBubbleView.swift in Sources */,
 				6D91935726276D7C0024522C /* FosterHomeSummaryView.swift in Sources */,
 				6DC93CDA277CA11C0032243C /* FosterHomeStore.swift in Sources */,
-				6DC93CD5277C9BC70032243C /* EditFosterHomeViewModel.swift in Sources */,
 				6DC93CE0277CBCF90032243C /* EditAnimalView.swift in Sources */,
 				6D60EB2726232C1E007726B7 /* NoteSheetView.swift in Sources */,
 				6DFC34E6277B4C1600405BE5 /* AnimalStore.swift in Sources */,

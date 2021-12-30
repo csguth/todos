@@ -13,12 +13,16 @@ struct FosterHomeDetailsView: View {
     @State var editing: Bool = false
     
     private func create() {
-        store.create()
+        guard store.create() else { return }
         editing = true
     }
     
+    private func delete(indexSet: IndexSet) {
+        guard store.deleteNotes(indexSet: indexSet) else { return }
+    }
+    
     private func edit(_ note: Note) {
-        store.edit(note: note)
+        guard store.edit(note: note) else { return }
         editing = true
     }
 
@@ -41,7 +45,7 @@ struct FosterHomeDetailsView: View {
                             NoteView(note: note)
                         })
                     }
-                    .onDelete(perform: { store.deleteNotes(indexSet: $0) })
+                    .onDelete(perform: delete)
                 }
                 .toolbar {
                     Button(action: create, label: {
@@ -54,8 +58,7 @@ struct FosterHomeDetailsView: View {
 
         }
         .sheet(isPresented: $editing) {
-            NoteSheetView()
-                .environmentObject(store.noteStore)
+            NoteSheetView().environmentObject(store.note)
         }
         .navigationBarTitle(store.name)
         
@@ -92,8 +95,11 @@ struct ContentView_Previews: PreviewProvider {
         let leona = Animal(context: persistenceController.container.viewContext)
         leona.name = "Leona"
         leona.fosterHome = fosterHome
+        
+        let store = FosterHomeStore(with: persistenceController)
+        store.fosterHome = fosterHome
 
         return FosterHomeDetailsView()
-            .environmentObject(FosterHomeStore(for: fosterHome))
+            .environmentObject(store)
     }
 }

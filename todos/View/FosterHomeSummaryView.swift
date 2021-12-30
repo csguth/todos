@@ -28,8 +28,8 @@ struct FosterHomeSummaryView: View {
         VStack {
             ScrollView(.horizontal) {
                 HStack {
-                    AddAnimalButtonView(onClicked: fosterHome.createAnimal)
-                    ForEach(fosterHome.animals) { AnimalBubbleView().environmentObject($0) }
+                    AddAnimalButtonView { guard fosterHome.createAnimal() else { return } }
+                    ForEach(fosterHome.animals) { animal in AnimalBubbleView().environmentObject(animal) }
                 }
             }
             Text(text)

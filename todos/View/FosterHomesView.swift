@@ -10,44 +10,46 @@ import CoreData
 
 struct FosterHomesView: View {
     
-    @Environment(\.managedObjectContext) var managedObjectContext
-    
     @FetchRequest (
         entity: FosterHome.entity(),
         sortDescriptors: []
     ) var homes: FetchedResults<FosterHome>
     
-    @StateObject var fosterHomes: ViewModel
+    @EnvironmentObject var store: ApplicationStore
+    @State var editing = false
+    
+    func create() {
+        store.createFosterHome()
+        editing = true
+    }
+    
+    func delete(indexSet: IndexSet) {
+        indexSet
+            .map { homes[$0] }
+            .forEach{ store.delete(fosterHome: $0) }
+    }
     
     var body: some View {
         ZStack {
             if homes.isEmpty {
                 VStack {
                     Text("Sem LTs")
-                    Button("Adicionar!", action: fosterHomes.create)
+                    Button("Adicionar!", action: create)
                 }
             }
             else {
                 List {
                     ForEach(homes) { home in
                         NavigationLink(
-                            destination: FosterHomeDetailsView()
-                                .environmentObject(FosterHomeStore(for: home)),
-                            label: {
-                                Text(home.wrappedName)
-                            })
+                            destination: FosterHomeDetailsView().environmentObject(store.storeFor(home: home)),
+                            label: { Text(home.wrappedName) }
+                        )
                     }
-                    .onDelete(perform: { indexSet in
-                        
-                        let fosterHomes = indexSet.map{ homes[$0] }
-                        fosterHomes.forEach(self.fosterHomes.deleteFosterHome)
-                        
-                    })
+                    .onDelete(perform: delete)
                 }
-                
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: fosterHomes.create, label: {
+                        Button(action: create, label: {
                             Image(systemName: "plus")
                         })
                     }
@@ -56,9 +58,7 @@ struct FosterHomesView: View {
         }
         .navigationBarTitle("Lares Temporários")
         .background(
-            NavigationLink(destination: EditFosterHomeView(fosterHome: fosterHomes.fosterHomeBeingEdited, onSave: fosterHomes.onFinishedEditing)
-            .environment(\.managedObjectContext, managedObjectContext),
-                           isActive: $fosterHomes.isEditing) {
+            NavigationLink(destination: EditFosterHomeView().environmentObject(store), isActive: $editing) {
                 EmptyView()
             }
         )
@@ -67,8 +67,9 @@ struct FosterHomesView: View {
 
 struct FosterHomesView_Previews: PreviewProvider {
     static var previews: some View {
-        let persistenceController = PersistenceController.preview
-        FosterHomesView(fosterHomes: FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext))
-            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        Spacer()
+//        let persistenceController = PersistenceController.preview
+//        FosterHomesView(fosterHomes: FosterHomesView.ViewModel(ctx: persistenceController.container.viewContext))
+//            .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }

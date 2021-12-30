@@ -9,6 +9,14 @@ import SwiftUI
 
 struct AnimalBubbleView: View {
     @EnvironmentObject var animal: AnimalStore
+    
+    func rehome() {
+        guard animal.rehome() else { return }
+    }
+    
+    func remove() {
+        guard animal.remove() else { return }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,10 +35,10 @@ struct AnimalBubbleView: View {
                 .foregroundColor(.white)
             }
             .contextMenu(ContextMenu(menuItems: {
-                Button(action: { animal.rehome() }, label: {
+                Button(action: rehome, label: {
                     Label("Rehome", systemImage: animal.adoption != nil ? "house.fill" : "house")
                 })
-                Button(action: {animal.remove()}, label: {
+                Button(action: remove, label: {
                     Label("Remove", systemImage: "trash.fill")
                 })
             }))

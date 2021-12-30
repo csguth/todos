@@ -20,7 +20,7 @@ struct NoteSheetView: View {
     }
     
     func save() {
-        note.save(content)
+        guard note.save(content) else { return }
         presentationMode.wrappedValue.dismiss()
     }
     

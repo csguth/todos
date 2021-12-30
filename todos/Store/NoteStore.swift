@@ -9,10 +9,12 @@ import Foundation
 
 class NoteStore: ObservableObject {
     
-    @Published var fosterHome: FosterHome
+    let ctx: PersistenceController
+    var onCreated: (Note) -> Bool
     
-    init (fosterHome: FosterHome) {
-        _fosterHome = Published(wrappedValue: fosterHome)
+    init (with ctx: PersistenceController) {
+        self.ctx = ctx
+        self.onCreated = { _ in return false}
     }
     
     @Published var currentNote: Note?
@@ -25,21 +27,22 @@ class NoteStore: ObservableObject {
         currentNote?.wrappedDate ?? Date()
     }
 
-    func save(_ content: String) {
-        guard let ctx = fosterHome.managedObjectContext else {
-            return
-        }
+    func save(_ content: String) -> Bool {
         guard let editing = currentNote else {
-            let note = Note(context: ctx)
+            let note = Note(context: ctx.container.viewContext)
             note.id = UUID()
             note.date = Date()
             note.content = content
-            fosterHome.addToNotes(note)
-            try! note.managedObjectContext?.save()
-            return
+            guard ctx.save() else { return false }
+            guard onCreated(note) else {
+                ctx.container.viewContext.delete(note)
+                let _ = ctx.save()
+                return false
+            }
+            return true
         }
         editing.content = content
-        try! editing.managedObjectContext?.save()
+        return ctx.save()
     }
     
 }

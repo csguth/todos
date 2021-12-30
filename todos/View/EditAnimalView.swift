@@ -22,46 +22,40 @@ struct EditAnimalView: View {
     }
     
     var canSave: Bool {
-        !name.isEmpty && name != animal.wrappedName ||
-        sex != animal.sex ||
-        color != animal.color
+        animal.canSave(name: name, sex: sex, color: color)
+    }
+    
+    func save() {
+        guard animal.save(name: name, sex: sex, color: color) else { return }
+        cancel()
+    }
+    
+    func cancel() {
+        presentationMode.wrappedValue.dismiss()
     }
     
     var body: some View {
         Form {
             Section(header: Text("Perfil")) {
                 TextField("Nome", text: $name)
-                .onAppear{
-                    name = animal.wrappedName
-                }
+                .onAppear { name = animal.name }
                 Picker(selection: $sex, label: Text("Sexo")) {
                     Text("Masculino").tag(Animal.Sex.male)
                     Text("Feminino").tag(Animal.Sex.female)
                 }
-                .onAppear{
-                    sex = animal.sex
-                }
+                .onAppear { sex = animal.sex }
                 .pickerStyle(.segmented)
             }
             Section(header: Text("Cor")) {
                 Button(action: nextColor) {
                     Image(color.rawValue)
-                    .onAppear{
-                        color = animal.color
-                    }
+                    .onAppear { color = animal.color }
                 }
             }
             Section {
-                Button("Salvar", action: {
-                    animal.save(name: name, sex: sex, color: color)
-                    presentationMode.wrappedValue.dismiss()
-                })
-                .disabled(!canSave)
-                Button("Cancelar", action: {
-                    presentationMode.wrappedValue.dismiss()
-                })
+                Button("Salvar", action: save).disabled(!canSave)
+                Button("Cancelar", action: cancel)
             }
-            
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Informações sobre o animal")

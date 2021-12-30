@@ -8,70 +8,79 @@
 import Foundation
 import SwiftUI
 
-class FosterHomeStore: ObservableObject {
+class FosterHomeStore: ObservableObject, Identifiable {
     
-    @Published var fosterHome: FosterHome
-    @Published var noteStore: NoteStore
+    let ctx: PersistenceController
     
-    init (for home: FosterHome) {
-        _fosterHome = Published(wrappedValue: home)
-        noteStore = NoteStore(fosterHome: home)
+    init (with ctx: PersistenceController) {
+        self.ctx = ctx
+        self.fosterHome = nil
+        note = NoteStore(with: ctx)
     }
     
+    @Published var fosterHome: FosterHome?
+    @Published var note: NoteStore
+    
     var name: String {
-        fosterHome.wrappedName
+        fosterHome?.wrappedName ?? ""
     }
     
     var notesArray: [Note] {
-        fosterHome.notesArray
+        fosterHome?.notesArray ?? [Note]()
     }
     
     var animals: [AnimalStore] {
-        fosterHome.animalsArray.map { AnimalStore(animal: $0) }
+        fosterHome?.animalsArray.map {
+            let store = AnimalStore(with: ctx)
+            store.animal = $0
+            return store
+        } ?? [AnimalStore]()
     }
     
     var malesCount: Int {
-        fosterHome.malesCount
+        fosterHome?.malesCount ?? 0
     }
     
     var femalesCount: Int {
-        fosterHome.femalesCount
+        fosterHome?.femalesCount ?? 0
     }
     
-    func deleteNotes(indexSet: IndexSet) {
-        guard let ctx = fosterHome.managedObjectContext else {
-            return
-        }
+    func deleteNotes(indexSet: IndexSet) -> Bool {
+        guard let fosterHome = self.fosterHome else { return true }
         indexSet
             .map{ notesArray[$0] }
             .forEach{
                 fosterHome.removeFromNotes($0)
-                if noteStore.currentNote == $0 {
-                    noteStore.currentNote = nil
-                }
+                if note.currentNote == $0 { note.currentNote = nil }
             }
-        try! ctx.save()
+        return ctx.save()
     }
     
-    func create() {
-        noteStore.currentNote = nil
-    }
-    
-    func edit(note: Note) {
-        noteStore.currentNote = note
-    }
-    
-    func createAnimal() {
-        guard let ctx = fosterHome.managedObjectContext else {
-            return
+    func create() -> Bool {
+        note.currentNote = nil
+        note.onCreated = { note in
+            guard let fosterHome = self.fosterHome else { return false }
+            fosterHome.addToNotes(note)
+            return self.ctx.save()
         }
-        let animal = Animal(context: ctx)
+        return true
+    }
+    
+    func edit(note: Note) -> Bool {
+        self.note.currentNote = note
+        self.note.onCreated = { _ in return false }
+        return true
+    }
+    
+    func createAnimal() -> Bool {
+        guard let fosterHome = self.fosterHome else { return false }
+        let animal = Animal(context: ctx.container.viewContext)
         animal.fosterHome = fosterHome
         animal.color = ["tabby-gray", "tabby-orange", "tuxedo"].randomElement()
         animal.name = ["Walter White", "Jesse Pinkman", "Gus Fring", "Hank Schrader", "Huell Babineaux", "Todd Alquist",  "Jane Margolis"].randomElement()
         animal.sex = ["M", "F"].randomElement()
         fosterHome.addToAnimals(animal)
-        try! ctx.save()
+        return ctx.save()
     }
     
     

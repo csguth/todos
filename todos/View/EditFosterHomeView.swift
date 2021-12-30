@@ -9,50 +9,72 @@ import SwiftUI
 import CoreData
 
 struct EditFosterHomeView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var store: ApplicationStore
 
-    @ObservedObject var fosterHome: ViewModel
+    @State var name = String()
+    @State var phone = String()
+    @State var date = Date()
     
-    let onSave: () -> Void
-        
+    var canSave: Bool {
+        store.canSave(name: name, phone: phone, date: date)
+    }
+    
+    func save() {
+        if store.save(name: name, phone: phone, date: date) {
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
+    
+    func cancel() {
+        store.cancel()
+        presentationMode.wrappedValue.dismiss()
+    }
+    
+    var age: String {
+        let days = date.daysBetween(date: Date())
+        let plural = days > 1 ? "s" : ""
+        return "\(days) dia\(plural)"
+    }
+    
+    var currentName: String {
+        store.currentFosterHome?.name ?? ""
+    }
+    
+    var currentPhone: String {
+        store.currentFosterHome?.phone ?? ""
+    }
+    
+    var currentDate: Date {
+        store.currentDate
+    }
+            
     var body: some View {
         Form {
             Section(header: Text("Perfil")) {
-                TextField("Nome", text: $fosterHome.name)
-                TextField("Telefone", text: $fosterHome.phone)
+                TextField("Nome", text: $name)
+                TextField("Telefone", text: $phone)
             }
             Section(header: Text("Gatos")) {
                 DatePicker(
-                    "Nascimento (\(fosterHome.age))",
-                    selection: $fosterHome.date,
+                    "Nascimento (\(age))",
+                    selection: $date,
                     in: ...Date(),
                     displayedComponents: [.date]
                 )
             }
             Section {
-                Button("Salvar", action: {
-                    if fosterHome.home == nil {
-                        let home = FosterHome(context: managedObjectContext)
-                        home.id = UUID()
-                        self.fosterHome.home = home
-                    }
-                    let home = self.fosterHome.home!
-                    home.date = fosterHome.date
-                    home.name = fosterHome.name
-                    home.phone = fosterHome.phone
-                    
-                    try! managedObjectContext.save()
-                    onSave()
-                })
-                .disabled(!fosterHome.canSave)
-                Button("Cancelar", action: onSave)
+                Button("Salvar", action: save).disabled(!canSave)
+                Button("Cancelar", action: cancel)
             }
             
         }
         .navigationTitle("Configuração do Lt")
         .navigationBarBackButtonHidden(true)
         .onAppear{
-            fosterHome.set(fosterHome: nil)
+            name = currentName
+            phone = currentPhone
+            date = currentDate
         }
     }
 
@@ -60,11 +82,14 @@ struct EditFosterHomeView: View {
 
 struct AddFosterHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        let ctx = PersistenceController.shared.container.viewContext
-        let home = FosterHome(context: ctx)
+        let ctx = PersistenceController.preview
+        let home = FosterHome(context: ctx.container.viewContext)
         home.id = UUID()
-        return EditFosterHomeView(fosterHome: EditFosterHomeView.ViewModel(from: home)) {
-            
-        }
+        home.name = "Lar da Leoninha"
+        home.phone = "phone"
+        let store = ApplicationStore(with: ctx)
+        store.edit(fosterHome: home)
+        return EditFosterHomeView()
+            .environmentObject(store)
     }
 }
